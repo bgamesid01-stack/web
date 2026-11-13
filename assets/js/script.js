@@ -8,10 +8,14 @@ if (localStorage.getItem(SESSION_KEY)) {
 }
 
 const alertBox = document.getElementById("alert-box");
+const tabsContainer = document.getElementById("tabs-container");
 const loginForm = document.getElementById("login-form");
 const registerForm = document.getElementById("register-form");
 const tabLogin = document.getElementById("tab-login");
 const tabRegister = document.getElementById("tab-register");
+const regPasswordInput = document.getElementById("reg-password");
+const strengthMeter = document.getElementById("strength-meter");
+const strengthLabel = document.getElementById("strength-label");
 
 async function hashPassword(password) {
   const data = new TextEncoder().encode(password);
@@ -31,23 +35,37 @@ function clearAlert() {
   alertBox.className = "alert hidden";
 }
 
+function setLoading(btn, isLoading, loadingText, defaultText) {
+  const textSpan = btn.querySelector(".btn-text");
+  const spinner = btn.querySelector(".spinner");
+  btn.disabled = isLoading;
+  textSpan.textContent = isLoading ? loadingText : defaultText;
+  spinner.classList.toggle("hidden", !isLoading);
+}
+
 function switchTab(mode) {
   clearAlert();
   const title = document.getElementById("form-title");
   const subtitle = document.getElementById("form-subtitle");
 
   if (mode === "login") {
+    tabsContainer.classList.remove("register-mode");
     loginForm.classList.remove("hidden");
     registerForm.classList.add("hidden");
     tabLogin.classList.add("active");
     tabRegister.classList.remove("active");
+    tabLogin.setAttribute("aria-selected", "true");
+    tabRegister.setAttribute("aria-selected", "false");
     title.textContent = "Selamat Datang";
     subtitle.textContent = "Masuk ke akun Anda untuk melanjutkan";
   } else {
+    tabsContainer.classList.add("register-mode");
     loginForm.classList.add("hidden");
     registerForm.classList.remove("hidden");
     tabLogin.classList.remove("active");
     tabRegister.classList.add("active");
+    tabLogin.setAttribute("aria-selected", "false");
+    tabRegister.setAttribute("aria-selected", "true");
     title.textContent = "Buat Akun Baru";
     subtitle.textContent = "Lengkapi data di bawah untuk mendaftar";
   }
@@ -69,13 +87,45 @@ async function sendToSheets(payload) {
 tabLogin.addEventListener("click", () => switchTab("login"));
 tabRegister.addEventListener("click", () => switchTab("register"));
 
+// Toggle ikon mata (Lihat / Sembunyikan Password)
 document.querySelectorAll(".toggle-pw").forEach((btn) => {
   btn.addEventListener("click", () => {
     const input = document.getElementById(btn.dataset.target);
-    const isHidden = input.type === "password";
-    input.type = isHidden ? "text" : "password";
-    btn.textContent = isHidden ? "Sembunyi" : "Lihat";
+    const eyeOpen = btn.querySelector(".eye-open");
+    const eyeClosed = btn.querySelector(".eye-closed");
+    const show = input.type === "password";
+
+    input.type = show ? "text" : "password";
+    eyeOpen.classList.toggle("hidden", show);
+    eyeClosed.classList.toggle("hidden", !show);
   });
+});
+
+// Indikator Kekuatan Kata Sandi Real-time
+regPasswordInput.addEventListener("input", () => {
+  const val = regPasswordInput.value;
+  strengthMeter.classList.remove("weak", "medium", "strong");
+
+  if (!val) {
+    strengthLabel.textContent = "Minimal 6 karakter";
+    return;
+  }
+
+  let score = 0;
+  if (val.length >= 6) score++;
+  if (val.length >= 8 && /[0-9]/.test(val)) score++;
+  if (/[A-Z]/.test(val) || /[^A-Za-z0-9]/.test(val)) score++;
+
+  if (score <= 1) {
+    strengthMeter.classList.add("weak");
+    strengthLabel.textContent = "Lemah";
+  } else if (score === 2) {
+    strengthMeter.classList.add("medium");
+    strengthLabel.textContent = "Sedang";
+  } else {
+    strengthMeter.classList.add("strong");
+    strengthLabel.textContent = "Kuat";
+  }
 });
 
 // Proses Daftar
@@ -85,7 +135,7 @@ registerForm.addEventListener("submit", async (e) => {
 
   const name = document.getElementById("reg-name").value.trim();
   const email = document.getElementById("reg-email").value.trim().toLowerCase();
-  const password = document.getElementById("reg-password").value;
+  const password = regPasswordInput.value;
   const confirm = document.getElementById("reg-confirm").value;
   const btn = document.getElementById("btn-register");
 
@@ -94,8 +144,7 @@ registerForm.addEventListener("submit", async (e) => {
     return;
   }
 
-  btn.disabled = true;
-  btn.textContent = "Menyimpan ke Cloud...";
+  setLoading(btn, true, "Menyimpan ke Cloud...", "Buat Akun Baru");
 
   try {
     const passwordHash = await hashPassword(password);
@@ -108,6 +157,8 @@ registerForm.addEventListener("submit", async (e) => {
 
     if (result.status === "success") {
       registerForm.reset();
+      strengthMeter.classList.remove("weak", "medium", "strong");
+      strengthLabel.textContent = "Minimal 6 karakter";
       switchTab("login");
       document.getElementById("login-email").value = email;
       showAlert(result.message, "success");
@@ -117,8 +168,7 @@ registerForm.addEventListener("submit", async (e) => {
   } catch (err) {
     showAlert(err.message || "Gagal terhubung ke server.");
   } finally {
-    btn.disabled = false;
-    btn.textContent = "Buat Akun Baru";
+    setLoading(btn, false, "Menyimpan ke Cloud...", "Buat Akun Baru");
   }
 });
 
@@ -131,8 +181,7 @@ loginForm.addEventListener("submit", async (e) => {
   const password = document.getElementById("login-password").value;
   const btn = document.getElementById("btn-login");
 
-  btn.disabled = true;
-  btn.textContent = "Memeriksa Akun...";
+  setLoading(btn, true, "Memeriksa Akun...", "Masuk Sekarang");
 
   try {
     const passwordHash = await hashPassword(password);
@@ -151,8 +200,6 @@ loginForm.addEventListener("submit", async (e) => {
   } catch (err) {
     showAlert(err.message || "Gagal terhubung ke server.");
   } finally {
-    btn.disabled = false;
-    btn.textContent = "Masuk Sekarang";
+    setLoading(btn, false, "Memeriksa Akun...", "Masuk Sekarang");
   }
 });
-    
