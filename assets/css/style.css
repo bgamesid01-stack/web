@@ -42,10 +42,151 @@ body {
   color: var(--text);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
 .hidden {
   display: none !important;
+}
+
+/* Transisi keluar halaman mulus */
+.app-wrapper {
+  transition: opacity 0.24s ease, transform 0.24s ease;
+}
+
+.app-wrapper.is-leaving {
+  opacity: 0;
+  transform: scale(0.985);
+}
+
+/* =====================================================
+   KEYFRAME ANIMATIONS
+   ===================================================== */
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInOnly {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes sheetSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shellReveal {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes crestRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes crestFloat {
+  0%, 100% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(-6px) scale(1.025); }
+}
+
+@keyframes ambientGlow {
+  0%, 100% {
+    opacity: 0.75;
+    transform: scale(1) translate(0, 0);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.12) translate(-10px, 10px);
+  }
+}
+
+@keyframes petalFall {
+  0% {
+    transform: translateY(-10px) rotate(0deg) translateX(0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.36;
+  }
+  85% {
+    opacity: 0.28;
+  }
+  100% {
+    transform: translateY(560px) rotate(300deg) translateX(26px);
+    opacity: 0;
+  }
+}
+
+@keyframes pulseRing {
+  0% { box-shadow: 0 0 0 0 rgba(251, 113, 133, 0.7); }
+  70% { box-shadow: 0 0 0 6px rgba(251, 113, 133, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(251, 113, 133, 0); }
+}
+
+@keyframes shakeError {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.anim-up {
+  opacity: 0;
+  animation: fadeSlideUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: var(--delay, 0s);
+}
+
+.anim-fade {
+  opacity: 0;
+  animation: fadeInOnly 0.5s ease forwards;
+  animation-delay: var(--delay, 0s);
+}
+
+.anim-scale {
+  opacity: 0;
+  animation: scaleIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: var(--delay, 0s);
+}
+
+.shake {
+  animation: shakeError 0.36s cubic-bezier(0.36, 0.07, 0.19, 0.97);
 }
 
 /* =====================================================
@@ -71,10 +212,10 @@ body {
 
   .brand-panel {
     background:
-      radial-gradient(circle at 90% 10%, rgba(190, 18, 60, 0.28), transparent 55%),
+      radial-gradient(circle at 90% 10%, rgba(190, 18, 60, 0.3), transparent 55%),
       linear-gradient(160deg, var(--sumi-950) 0%, var(--sumi-900) 100%);
     color: #ffffff;
-    padding: 22px 20px 44px;
+    padding: 24px 20px 48px;
     position: relative;
     overflow: hidden;
   }
@@ -89,20 +230,28 @@ body {
 
   .form-panel {
     background: var(--surface);
-    border-radius: 22px 22px 0 0;
-    margin-top: -22px;
-    padding: 28px 20px 36px;
+    border-radius: 24px 24px 0 0;
+    margin-top: -24px;
+    padding: 14px 20px 36px;
     flex: 1;
     position: relative;
     z-index: 2;
-    box-shadow: 0 -8px 24px rgba(18, 11, 15, 0.12);
+    box-shadow: 0 -8px 24px rgba(18, 11, 15, 0.14);
+    animation: sheetSlideUp 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .sheet-handle {
+    width: 36px;
+    height: 4px;
+    background: var(--border);
+    border-radius: 99px;
+    margin: 0 auto 18px;
   }
 
   .form-header h1 {
     font-size: 1.38rem;
   }
 
-  /* Tinggi tombol/input nyaman disentuh & cegah auto-zoom layar HP */
   .input-box input,
   .btn-primary {
     min-height: 48px;
@@ -125,6 +274,10 @@ body {
     padding: 32px;
   }
 
+  .sheet-handle {
+    display: none;
+  }
+
   .app-wrapper {
     width: 100%;
     max-width: 900px;
@@ -141,11 +294,12 @@ body {
       0 24px 48px -12px rgba(24, 17, 21, 0.12),
       0 4px 12px -2px rgba(24, 17, 21, 0.04);
     min-height: 540px;
+    animation: shellReveal 0.48s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .brand-panel {
     background:
-      radial-gradient(circle at 85% 15%, rgba(190, 18, 60, 0.25), transparent 50%),
+      radial-gradient(circle at 85% 15%, rgba(190, 18, 60, 0.26), transparent 50%),
       radial-gradient(circle at 15% 90%, rgba(159, 18, 57, 0.2), transparent 55%),
       linear-gradient(165deg, var(--sumi-950) 0%, var(--sumi-900) 100%);
     color: #ffffff;
@@ -167,11 +321,29 @@ body {
   }
 
   .mon-crest {
-    width: 200px;
-    height: 200px;
+    width: 204px;
+    height: 204px;
     margin: auto;
     position: relative;
     z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .crest-ring-outer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    animation: crestRotate 48s linear infinite;
+  }
+
+  .crest-flower {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    animation: crestFloat 6s ease-in-out infinite;
   }
 
   .brand-foot {
@@ -182,16 +354,16 @@ body {
     gap: 8px;
     font-size: 0.76rem;
     font-weight: 500;
-    color: rgba(255, 255, 255, 0.52);
+    color: rgba(255, 255, 255, 0.54);
     letter-spacing: 0.02em;
   }
 
-  .brand-foot::before {
-    content: "";
+  .pulse-dot {
     width: 6px;
     height: 6px;
     border-radius: 50%;
     background: #fb7185;
+    animation: pulseRing 2.4s infinite;
   }
 
   .form-panel {
@@ -214,7 +386,7 @@ body {
 }
 
 /* =====================================================
-   3. KOMPONEN PRESISI
+   3. AMBIENT SAKURA & KOMPONEN PRESISI
    ===================================================== */
 .brand-grid {
   position: absolute;
@@ -225,6 +397,43 @@ body {
   background-size: 28px 28px;
   pointer-events: none;
 }
+
+.brand-glow {
+  position: absolute;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(225, 29, 72, 0.24), transparent 70%);
+  top: -60px;
+  right: -60px;
+  pointer-events: none;
+  animation: ambientGlow 8s ease-in-out infinite;
+}
+
+.sakura-petals {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.sakura-petals span {
+  position: absolute;
+  top: -16px;
+  width: 9px;
+  height: 13px;
+  background: linear-gradient(135deg, #fecdd3, #fb7185);
+  border-radius: 150% 0 150% 0;
+  opacity: 0;
+  animation: petalFall 12s linear infinite;
+}
+
+.sakura-petals span:nth-child(1) { left: 14%; animation-duration: 11s; animation-delay: 0.5s; }
+.sakura-petals span:nth-child(2) { left: 36%; animation-duration: 14s; animation-delay: 3s; width: 7px; height: 10px; }
+.sakura-petals span:nth-child(3) { left: 58%; animation-duration: 10.5s; animation-delay: 5s; }
+.sakura-petals span:nth-child(4) { left: 78%; animation-duration: 13s; animation-delay: 1.5s; width: 8px; height: 11px; }
+.sakura-petals span:nth-child(5) { left: 88%; animation-duration: 12s; animation-delay: 6.5s; }
+.sakura-petals span:nth-child(6) { left: 24%; animation-duration: 15s; animation-delay: 8s; width: 7px; height: 10px; }
 
 .brand-badge {
   display: flex;
@@ -242,6 +451,11 @@ body {
   align-items: center;
   justify-content: center;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transition: transform 0.25s ease;
+}
+
+.brand-badge:hover .brand-mark {
+  transform: rotate(18deg) scale(1.05);
 }
 
 .brand-name {
@@ -269,6 +483,7 @@ body {
   font-weight: 700;
   letter-spacing: -0.025em;
   color: var(--text);
+  transition: opacity 0.2s ease;
 }
 
 /* Segmented Tabs */
@@ -292,7 +507,7 @@ body {
   background: var(--surface);
   border-radius: 7px;
   box-shadow: 0 1px 3px rgba(24, 17, 21, 0.08);
-  transition: transform 0.24s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .tabs.register-mode .tab-glider {
@@ -327,7 +542,7 @@ body {
   font-weight: 500;
   margin-bottom: 16px;
   line-height: 1.45;
-  animation: fadeIn 0.2s ease;
+  animation: fadeSlideUp 0.24s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .alert-icon {
@@ -349,13 +564,8 @@ body {
   border: 1px solid var(--success-border);
 }
 
-.auth-form {
-  animation: fadeIn 0.22s ease;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(4px); }
-  to { opacity: 1; transform: translateY(0); }
+.auth-form.tab-switched {
+  animation: fadeSlideUp 0.28s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* Inputs */
@@ -384,7 +594,7 @@ body {
   display: flex;
   align-items: center;
   pointer-events: none;
-  transition: color 0.18s ease;
+  transition: color 0.18s ease, transform 0.18s ease;
 }
 
 .input-box input {
@@ -417,6 +627,7 @@ body {
 
 .input-box:focus-within .input-icon {
   color: var(--beni-600);
+  transform: scale(1.06);
 }
 
 .toggle-pw {
@@ -430,11 +641,15 @@ body {
   padding: 4px;
   border-radius: 6px;
   cursor: pointer;
-  transition: color 0.18s ease;
+  transition: color 0.18s ease, transform 0.15s ease;
 }
 
 .toggle-pw:hover {
   color: var(--text);
+}
+
+.toggle-pw:active {
+  transform: scale(0.9);
 }
 
 /* Password Strength Bars */
@@ -449,7 +664,7 @@ body {
   flex: 1;
   border-radius: 99px;
   background: var(--border);
-  transition: background-color 0.22s ease;
+  transition: background-color 0.25s ease, transform 0.2s ease;
 }
 
 .strength-bars.weak .s-bar:nth-child(1) { background: #e11d48; }
@@ -457,8 +672,10 @@ body {
 .strength-bars.medium .s-bar:nth-child(2) { background: #d97706; }
 .strength-bars.strong .s-bar { background: #059669; }
 
-/* Primary CTA Button */
+/* Primary CTA Button with Sheen Sweep */
 .btn-primary {
+  position: relative;
+  overflow: hidden;
   width: 100%;
   padding: 12px 16px;
   border-radius: 10px;
@@ -476,15 +693,33 @@ body {
   box-shadow:
     0 1px 2px rgba(24, 17, 21, 0.15),
     inset 0 1px 0 rgba(255, 255, 255, 0.18);
-  transition: background-color 0.18s ease, transform 0.12s ease, opacity 0.18s ease;
+  transition: background-color 0.18s ease, transform 0.14s ease, box-shadow 0.2s ease, opacity 0.18s ease;
+}
+
+.btn-primary::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.55s ease;
+  pointer-events: none;
 }
 
 .btn-primary:hover:not(:disabled) {
   background: var(--beni-700);
+  box-shadow: 0 6px 16px -4px rgba(190, 18, 60, 0.42);
+}
+
+.btn-primary:hover:not(:disabled)::after {
+  left: 140%;
 }
 
 .btn-primary:active:not(:disabled) {
-  transform: scale(0.99);
+  transform: scale(0.985);
 }
 
 .btn-primary:disabled {
@@ -501,6 +736,10 @@ body {
   animation: spin 0.7s linear infinite;
 }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
