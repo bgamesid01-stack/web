@@ -1,21 +1,27 @@
 :root {
-  --bg-page: #fdf2f8;
+  --bg-canvas: #f7f4f6;
   --surface: #ffffff;
-  --surface-soft: #fff8fb;
-  --text: #2a1221;
-  --text-muted: #886377;
-  --border: #f3d4e3;
-  --primary: #e11d74;
-  --primary-hover: #be185d;
-  --primary-soft: #fce7f3;
-  --primary-glow: rgba(225, 29, 116, 0.16);
-  --sakura-dark-1: #2b0d20;
-  --sakura-dark-2: #58183c;
-  --sakura-dark-3: #9d174d;
-  --danger: #be123c;
-  --danger-bg: #ffe4e6;
-  --success: #047857;
-  --success-bg: #d1fae5;
+  --surface-muted: #faf8f9;
+  --text: #181115;
+  --text-secondary: #685b62;
+  --text-placeholder: #a1939a;
+  --border: #e6dfe3;
+  --border-strong: #d4c8cf;
+
+  /* Palet Sakura Beni & Sumi Obsidian */
+  --sumi-950: #120b0f;
+  --sumi-900: #1e1218;
+  --beni-600: #be123c;
+  --beni-700: #9f1239;
+  --beni-50: #fff1f2;
+  --beni-ring: rgba(190, 18, 60, 0.14);
+
+  --danger-text: #be123c;
+  --danger-bg: #fff1f2;
+  --danger-border: #fecdd3;
+  --success-text: #065f46;
+  --success-bg: #ecfdf5;
+  --success-border: #a7f3d0;
 }
 
 * {
@@ -26,12 +32,16 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+::selection {
+  background: #ffe4e6;
+  color: #881337;
+}
+
 body {
-  background-color: var(--bg-page);
+  background-color: var(--bg-canvas);
   color: var(--text);
   min-height: 100vh;
-  overflow-x: hidden;
-  position: relative;
+  -webkit-font-smoothing: antialiased;
 }
 
 .hidden {
@@ -39,16 +49,16 @@ body {
 }
 
 /* =====================================================
-   TAMPILAN HP / MOBILE (Layar < 860px)
-   Compact Sakura Header + Overlapping Bottom Sheet
+   1. TAMPILAN MOBILE / HP (Layar < 860px)
+   Top Header Sumi Minimalis + Clean Native Sheet
    ===================================================== */
 @media (max-width: 859px) {
   body {
     background-color: var(--surface);
   }
 
-  .bg-orb,
-  .sakura-art {
+  .mon-crest,
+  .brand-foot {
     display: none;
   }
 
@@ -61,248 +71,228 @@ body {
 
   .brand-panel {
     background:
-      radial-gradient(circle at 85% 20%, rgba(244, 114, 182, 0.35), transparent 55%),
-      linear-gradient(145deg, var(--sakura-dark-1) 0%, var(--sakura-dark-2) 60%, var(--sakura-dark-3) 100%);
+      radial-gradient(circle at 90% 10%, rgba(190, 18, 60, 0.28), transparent 55%),
+      linear-gradient(160deg, var(--sumi-950) 0%, var(--sumi-900) 100%);
     color: #ffffff;
-    padding: 28px 22px 62px;
+    padding: 22px 20px 44px;
     position: relative;
     overflow: hidden;
   }
 
-  .form-panel {
-    background: var(--surface);
-    border-radius: 30px 30px 0 0;
-    margin-top: -32px;
-    padding: 14px 22px 36px;
-    flex: 1;
-    box-shadow: 0 -10px 28px rgba(43, 13, 32, 0.14);
+  .brand-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     position: relative;
-    z-index: 2;
+    z-index: 1;
   }
 
-  .sheet-handle {
-    width: 38px;
-    height: 4px;
-    background: #f3d4e3;
-    border-radius: 99px;
-    margin: 0 auto 18px;
+  .form-panel {
+    background: var(--surface);
+    border-radius: 22px 22px 0 0;
+    margin-top: -22px;
+    padding: 28px 20px 36px;
+    flex: 1;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 -8px 24px rgba(18, 11, 15, 0.12);
   }
 
   .form-header h1 {
-    font-size: 1.45rem;
+    font-size: 1.38rem;
   }
 
+  /* Tinggi tombol/input nyaman disentuh & cegah auto-zoom layar HP */
   .input-box input,
   .btn-primary {
-    min-height: 50px;
+    min-height: 48px;
     font-size: 16px;
   }
 }
 
 /* =====================================================
-   TAMPILAN DESKTOP / LAPTOP (Layar >= 860px)
-   Minimalist Split Card + Soft Blossom Backdrop
+   2. TAMPILAN DESKTOP / LAPTOP (Layar >= 860px)
+   Architectural Editorial Split Layout
    ===================================================== */
 @media (min-width: 860px) {
   body {
-    background: linear-gradient(135deg, #fff5f9 0%, #fce7f3 50%, #fae8ff 100%);
+    background-color: var(--bg-canvas);
+    background-image: radial-gradient(#dcd2d8 1px, transparent 1px);
+    background-size: 24px 24px;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 32px;
   }
 
-  .bg-orb {
-    position: fixed;
-    border-radius: 50%;
-    filter: blur(85px);
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .orb-1 {
-    width: 380px;
-    height: 380px;
-    background: rgba(244, 114, 182, 0.28);
-    top: -90px;
-    left: 12%;
-  }
-
-  .orb-2 {
-    width: 340px;
-    height: 340px;
-    background: rgba(251, 113, 133, 0.22);
-    bottom: -80px;
-    right: 14%;
-  }
-
   .app-wrapper {
     width: 100%;
-    max-width: 860px;
-    position: relative;
-    z-index: 1;
+    max-width: 900px;
   }
 
   .auth-shell {
     display: grid;
-    grid-template-columns: 0.92fr 1.08fr;
+    grid-template-columns: 0.86fr 1.14fr;
     background: var(--surface);
-    border-radius: 26px;
+    border-radius: 20px;
     overflow: hidden;
+    border: 1px solid var(--border);
     box-shadow:
-      0 26px 60px -15px rgba(88, 24, 60, 0.2),
-      0 0 0 1px rgba(244, 114, 182, 0.22);
-    min-height: 520px;
+      0 24px 48px -12px rgba(24, 17, 21, 0.12),
+      0 4px 12px -2px rgba(24, 17, 21, 0.04);
+    min-height: 540px;
   }
 
   .brand-panel {
     background:
-      radial-gradient(circle at 80% 15%, rgba(244, 114, 182, 0.32), transparent 55%),
-      radial-gradient(circle at 15% 85%, rgba(225, 29, 116, 0.35), transparent 60%),
-      linear-gradient(160deg, var(--sakura-dark-1) 0%, var(--sakura-dark-2) 55%, var(--sakura-dark-3) 100%);
+      radial-gradient(circle at 85% 15%, rgba(190, 18, 60, 0.25), transparent 50%),
+      radial-gradient(circle at 15% 90%, rgba(159, 18, 57, 0.2), transparent 55%),
+      linear-gradient(165deg, var(--sumi-950) 0%, var(--sumi-900) 100%);
     color: #ffffff;
-    padding: 38px 34px;
+    padding: 36px 32px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     position: relative;
     overflow: hidden;
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
   }
 
-  .sakura-art {
-    width: 190px;
-    height: 190px;
+  .brand-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    z-index: 1;
+  }
+
+  .mon-crest {
+    width: 200px;
+    height: 200px;
     margin: auto;
-    animation: slowSpin 38s linear infinite;
+    position: relative;
+    z-index: 1;
   }
 
-  @keyframes slowSpin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+  .brand-foot {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.76rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.52);
+    letter-spacing: 0.02em;
   }
 
-  .sheet-handle {
-    display: none;
+  .brand-foot::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #fb7185;
   }
 
   .form-panel {
-    padding: 42px 44px;
+    padding: 44px 48px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     background: var(--surface);
   }
 
+  .form-container {
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto;
+  }
+
   .form-header h1 {
-    font-size: 1.65rem;
+    font-size: 1.5rem;
   }
 }
 
 /* =====================================================
-   KELOPAK SAKURA JATUH HALUS
+   3. KOMPONEN PRESISI
    ===================================================== */
-.petals {
+.brand-grid {
   position: absolute;
   inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 28px 28px;
   pointer-events: none;
-  overflow: hidden;
 }
 
-.petals span {
-  position: absolute;
-  top: -12%;
-  width: 11px;
-  height: 15px;
-  background: linear-gradient(135deg, #fbcfe8, #f472b6);
-  border-radius: 150% 0 150% 0;
-  opacity: 0.45;
-  animation: petalFall 11s linear infinite;
-}
-
-.petals span:nth-child(1) { left: 12%; animation-duration: 10s; animation-delay: 0s; }
-.petals span:nth-child(2) { left: 32%; animation-duration: 13s; animation-delay: 2s; width: 9px; height: 12px; }
-.petals span:nth-child(3) { left: 54%; animation-duration: 9.5s; animation-delay: 4s; }
-.petals span:nth-child(4) { left: 74%; animation-duration: 12s; animation-delay: 1s; width: 8px; height: 11px; }
-.petals span:nth-child(5) { left: 88%; animation-duration: 11s; animation-delay: 3.5s; }
-.petals span:nth-child(6) { left: 22%; animation-duration: 14s; animation-delay: 5.5s; }
-
-@keyframes petalFall {
-  0% {
-    transform: translateY(0) rotate(0deg) translateX(0);
-    opacity: 0;
-  }
-  15% {
-    opacity: 0.5;
-  }
-  85% {
-    opacity: 0.4;
-  }
-  100% {
-    transform: translateY(560px) rotate(320deg) translateX(28px);
-    opacity: 0;
-  }
-}
-
-/* =====================================================
-   KOMPONEN UMUM
-   ===================================================== */
 .brand-badge {
-  position: relative;
-  z-index: 1;
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-.brand-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 11px;
-  background: linear-gradient(135deg, #f472b6, #e11d74);
+.brand-mark {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--beni-600);
   color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 6px 16px rgba(225, 29, 116, 0.4);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 
 .brand-name {
-  font-weight: 800;
-  font-size: 1.06rem;
-  letter-spacing: -0.2px;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: -0.02em;
+}
+
+.env-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.78);
 }
 
 .form-header {
-  margin-bottom: 18px;
+  margin-bottom: 20px;
 }
 
 .form-header h1 {
-  font-weight: 800;
-  letter-spacing: -0.4px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
   color: var(--text);
 }
 
-/* Sliding Tab Switcher */
+/* Segmented Tabs */
 .tabs {
   position: relative;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  background: var(--primary-soft);
-  padding: 4px;
-  border-radius: 12px;
+  background: #f3eff1;
+  padding: 3px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
   margin-bottom: 20px;
 }
 
 .tab-glider {
   position: absolute;
-  top: 4px;
-  left: 4px;
-  width: calc(50% - 4px);
-  height: calc(100% - 8px);
+  top: 3px;
+  left: 3px;
+  width: calc(50% - 3px);
+  height: calc(100% - 6px);
   background: var(--surface);
-  border-radius: 9px;
-  box-shadow: 0 2px 8px rgba(88, 24, 60, 0.1);
-  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  border-radius: 7px;
+  box-shadow: 0 1px 3px rgba(24, 17, 21, 0.08);
+  transition: transform 0.24s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .tabs.register-mode .tab-glider {
@@ -314,65 +304,69 @@ body {
   z-index: 1;
   border: none;
   background: transparent;
-  padding: 10px;
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: var(--text-muted);
+  padding: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-secondary);
   cursor: pointer;
-  transition: color 0.2s ease;
+  transition: color 0.18s ease;
 }
 
 .tab-btn.active {
-  color: var(--primary);
+  color: var(--text);
 }
 
-/* Alert Box */
+/* Alert Banner */
 .alert {
-  padding: 11px 14px;
-  border-radius: 12px;
-  font-size: 0.84rem;
-  font-weight: 600;
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  padding: 11px 13px;
+  border-radius: 10px;
+  font-size: 0.83rem;
+  font-weight: 500;
   margin-bottom: 16px;
-  line-height: 1.4;
-  animation: fadeSlide 0.25s ease;
+  line-height: 1.45;
+  animation: fadeIn 0.2s ease;
+}
+
+.alert-icon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin-top: 1px;
 }
 
 .alert.error {
   background: var(--danger-bg);
-  color: var(--danger);
-  border: 1px solid #fecdd3;
+  color: var(--danger-text);
+  border: 1px solid var(--danger-border);
 }
 
 .alert.success {
   background: var(--success-bg);
-  color: var(--success);
-  border: 1px solid #a7f3d0;
+  color: var(--success-text);
+  border: 1px solid var(--success-border);
 }
 
 .auth-form {
-  animation: fadeSlide 0.26s ease;
+  animation: fadeIn 0.22s ease;
 }
 
-@keyframes fadeSlide {
-  from {
-    opacity: 0;
-    transform: translateY(5px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* Form Inputs */
+/* Inputs */
 .form-group {
   margin-bottom: 14px;
 }
 
 .form-group label {
   display: block;
-  font-size: 0.82rem;
-  font-weight: 700;
+  font-size: 0.81rem;
+  font-weight: 600;
   color: var(--text);
   margin-bottom: 6px;
 }
@@ -385,118 +379,123 @@ body {
 
 .input-icon {
   position: absolute;
-  left: 14px;
-  color: #c084a1;
+  left: 13px;
+  color: var(--text-placeholder);
   display: flex;
   align-items: center;
   pointer-events: none;
-  transition: color 0.2s;
+  transition: color 0.18s ease;
 }
 
 .input-box input {
   width: 100%;
-  padding: 12px 44px 12px 42px;
-  background: var(--surface-soft);
-  border: 1.5px solid var(--border);
-  border-radius: 12px;
-  font-size: 0.94rem;
+  padding: 11px 40px 11px 40px;
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 0.92rem;
   font-weight: 500;
   color: var(--text);
   outline: none;
-  transition: all 0.2s ease;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
 }
 
 .input-box input::placeholder {
-  color: #c084a1;
+  color: var(--text-placeholder);
   font-weight: 400;
+}
+
+.input-box input:hover {
+  border-color: var(--border-strong);
 }
 
 .input-box input:focus {
   background: var(--surface);
-  border-color: var(--primary);
-  box-shadow: 0 0 0 4px var(--primary-glow);
+  border-color: var(--beni-600);
+  box-shadow: 0 0 0 3px var(--beni-ring);
 }
 
 .input-box:focus-within .input-icon {
-  color: var(--primary);
+  color: var(--beni-600);
 }
 
 .toggle-pw {
   position: absolute;
-  right: 12px;
+  right: 11px;
   background: none;
   border: none;
-  color: #b57b97;
+  color: var(--text-placeholder);
   display: flex;
   align-items: center;
   padding: 4px;
+  border-radius: 6px;
   cursor: pointer;
-  transition: color 0.2s;
+  transition: color 0.18s ease;
 }
 
 .toggle-pw:hover {
-  color: var(--primary);
+  color: var(--text);
 }
 
-/* Bar Kekuatan Password Minimalis */
+/* Password Strength Bars */
 .strength-bars {
   display: flex;
-  gap: 5px;
-  margin-top: 8px;
+  gap: 4px;
+  margin-top: 7px;
 }
 
 .s-bar {
-  height: 4px;
+  height: 3px;
   flex: 1;
   border-radius: 99px;
-  background: #f3d4e3;
-  transition: background-color 0.25s ease;
+  background: var(--border);
+  transition: background-color 0.22s ease;
 }
 
-.strength-bars.weak .s-bar:nth-child(1) { background: #fb7185; }
+.strength-bars.weak .s-bar:nth-child(1) { background: #e11d48; }
 .strength-bars.medium .s-bar:nth-child(1),
-.strength-bars.medium .s-bar:nth-child(2) { background: #f59e0b; }
-.strength-bars.strong .s-bar { background: #10b981; }
+.strength-bars.medium .s-bar:nth-child(2) { background: #d97706; }
+.strength-bars.strong .s-bar { background: #059669; }
 
-/* Tombol Utama Sakura */
+/* Primary CTA Button */
 .btn-primary {
   width: 100%;
-  padding: 13px 18px;
-  border-radius: 12px;
-  font-size: 0.95rem;
-  font-weight: 700;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 0.92rem;
+  font-weight: 600;
   cursor: pointer;
   border: none;
-  background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+  background: var(--beni-600);
   color: #ffffff;
   margin-top: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  box-shadow: 0 10px 22px -6px rgba(219, 39, 119, 0.48);
-  transition: transform 0.15s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  gap: 8px;
+  box-shadow:
+    0 1px 2px rgba(24, 17, 21, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  transition: background-color 0.18s ease, transform 0.12s ease, opacity 0.18s ease;
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: linear-gradient(135deg, #db2777 0%, #be185d 100%);
-  box-shadow: 0 14px 26px -6px rgba(219, 39, 119, 0.6);
-  transform: translateY(-1px);
+  background: var(--beni-700);
 }
 
 .btn-primary:active:not(:disabled) {
-  transform: scale(0.985);
+  transform: scale(0.99);
 }
 
 .btn-primary:disabled {
-  opacity: 0.72;
+  opacity: 0.68;
   cursor: not-allowed;
 }
 
 .spinner {
-  width: 18px;
-  height: 18px;
-  border: 2.5px solid rgba(255, 255, 255, 0.35);
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
   border-top-color: #ffffff;
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
