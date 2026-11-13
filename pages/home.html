@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Halaman Utama Website</title>
+
+  <style>
+    body.auth-checking {
+      visibility: hidden;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background: #f1f5f9;
+      color: #0f172a;
+    }
+
+    .navbar {
+      background: #0f172a;
+      color: #ffffff;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .nav-brand {
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
+
+    .nav-user {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.9rem;
+    }
+
+    .btn-logout {
+      background: #ef4444;
+      color: #ffffff;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-logout:hover {
+      background: #dc2626;
+    }
+
+    .main-content {
+      max-width: 900px;
+      margin: 32px auto;
+      padding: 0 20px;
+    }
+
+    .welcome-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
+    }
+
+    .welcome-card h1 {
+      font-size: 1.5rem;
+      margin-bottom: 8px;
+    }
+
+    .welcome-card p {
+      color: #475569;
+      line-height: 1.6;
+    }
+  </style>
+
+  <!-- PENJAGA HALAMAN (AUTH GUARD) -->
+  <script>
+    const SESSION_KEY = "akunportal_active_user";
+    const LOGIN_PAGE = "../index.html";
+    let activeUser = null;
+
+    try {
+      const savedData = localStorage.getItem(SESSION_KEY);
+      if (!savedData) throw new Error("Belum login");
+
+      activeUser = JSON.parse(savedData);
+      if (!activeUser || !activeUser.email) throw new Error("Sesi rusak");
+    } catch {
+      window.location.replace(LOGIN_PAGE);
+    }
+  </script>
+</head>
+<body class="auth-checking">
+  <header class="navbar">
+    <div class="nav-brand">Website Utama</div>
+    <div class="nav-user">
+      <span>Halo, <strong id="nav-username">User</strong></span>
+      <button type="button" class="btn-logout" onclick="logout()">Keluar</button>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <section class="welcome-card">
+      <h1>Selamat Datang, <span id="hero-name">Pengguna</span>!</h1>
+      <p>
+        Halaman ini hanya bisa diakses setelah login menggunakan akun
+        <strong id="hero-email">-</strong>. Silakan isi bagian ini dengan konten utama website kamu.
+      </p>
+    </section>
+  </main>
+
+  <script>
+    if (activeUser) {
+      document.body.classList.remove("auth-checking");
+      document.getElementById("nav-username").textContent = activeUser.name;
+      document.getElementById("hero-name").textContent = activeUser.name;
+      document.getElementById("hero-email").textContent = activeUser.email;
+    }
+
+    function logout() {
+      localStorage.removeItem(SESSION_KEY);
+      window.location.replace(LOGIN_PAGE);
+    }
+  </script>
+</body>
+</html>
