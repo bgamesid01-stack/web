@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Beranda</title>
+  <title>Workspace — SakuraPortal</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
   <style>
     body.auth-checking {
@@ -18,150 +18,217 @@
       margin: 0;
       padding: 0;
       font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
     }
 
     body {
-      background: #fdf2f8;
-      color: #2a1221;
+      background: #f7f4f6;
+      color: #181115;
       min-height: 100vh;
     }
 
-    .navbar {
-      background: #2b0d20;
+    /* Top Navigation Bar */
+    .topbar {
+      background: #120b0f;
       color: #ffffff;
-      padding: 14px 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .topbar-inner {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 13px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid rgba(251, 207, 232, 0.14);
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
-
-    .nav-brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 800;
-      font-size: 1.05rem;
-    }
-
-    .nav-logo {
-      width: 32px;
-      height: 32px;
-      border-radius: 10px;
-      background: linear-gradient(135deg, #f472b6, #e11d74);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .nav-right {
-      display: flex;
-      align-items: center;
       gap: 12px;
     }
 
-    .user-chip {
+    .brand {
       display: flex;
       align-items: center;
-      gap: 8px;
-      background: rgba(255, 255, 255, 0.08);
-      padding: 5px 12px 5px 6px;
-      border-radius: 99px;
-      font-size: 0.85rem;
-      font-weight: 600;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 0.98rem;
+      letter-spacing: -0.02em;
     }
 
-    .nav-avatar {
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      background: #e11d74;
+    .brand-mark {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      background: #be123c;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.78rem;
-      font-weight: 800;
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .user-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 12px 4px 5px;
+      border-radius: 99px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 0.83rem;
+      font-weight: 500;
+    }
+
+    .avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #be123c;
+      color: #ffffff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .btn-logout {
-      background: rgba(251, 113, 133, 0.16);
-      color: #fda4af;
-      border: 1px solid rgba(251, 113, 133, 0.3);
-      padding: 7px 14px;
-      border-radius: 10px;
-      font-size: 0.84rem;
-      font-weight: 700;
+      background: transparent;
+      color: rgba(255, 255, 255, 0.78);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 600;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.16s ease;
     }
 
     .btn-logout:hover {
-      background: #e11d74;
+      background: #be123c;
+      border-color: #be123c;
       color: #ffffff;
     }
 
-    .container {
-      max-width: 920px;
-      margin: 28px auto;
-      padding: 0 20px;
+    /* Main Workspace */
+    .workspace {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 28px 20px 48px;
       display: flex;
       flex-direction: column;
-      gap: 18px;
+      gap: 20px;
     }
 
-    .hero-banner {
-      background:
-        radial-gradient(circle at 88% 20%, rgba(244, 114, 182, 0.35), transparent 50%),
-        linear-gradient(135deg, #2b0d20 0%, #58183c 60%, #9d174d 100%);
-      color: #ffffff;
-      border-radius: 22px;
-      padding: 28px;
-      box-shadow: 0 18px 36px -12px rgba(88, 24, 60, 0.3);
+    .page-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid #e6dfe3;
     }
 
-    .hero-banner h1 {
-      font-size: 1.6rem;
-      font-weight: 800;
-      margin-bottom: 6px;
+    .page-head h1 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      letter-spacing: -0.025em;
     }
 
-    .hero-banner p {
-      font-size: 0.9rem;
-      color: rgba(255, 255, 255, 0.82);
+    .status-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: #065f46;
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      padding: 4px 10px;
+      border-radius: 99px;
     }
 
-    .info-grid {
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #10b981;
+    }
+
+    /* Account Summary Grid */
+    .meta-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 14px;
     }
 
-    .stat-card {
+    .meta-card {
       background: #ffffff;
-      border: 1px solid #f3d4e3;
-      border-radius: 16px;
+      border: 1px solid #e6dfe3;
+      border-radius: 14px;
       padding: 18px 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
     }
 
-    .stat-card span {
+    .meta-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+      background: #fff1f2;
+      color: #be123c;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .meta-card span {
       display: block;
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       font-weight: 600;
-      color: #886377;
-      margin-bottom: 4px;
+      color: #685b62;
+      margin-bottom: 3px;
     }
 
-    .stat-card strong {
-      font-size: 0.98rem;
-      font-weight: 700;
-      color: #2a1221;
+    .meta-card strong {
+      display: block;
+      font-size: 0.94rem;
+      font-weight: 600;
+      color: #181115;
       word-break: break-word;
+    }
+
+    /* Content Canvas */
+    .content-surface {
+      background: #ffffff;
+      border: 1px solid #e6dfe3;
+      border-radius: 16px;
+      padding: 28px 24px;
+      min-height: 240px;
+    }
+
+    .content-surface h2 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .content-surface p {
+      font-size: 0.9rem;
+      color: #685b62;
+      line-height: 1.6;
     }
   </style>
 
+  <!-- PENJAGA HALAMAN (AUTH GUARD) -->
   <script>
     const SESSION_KEY = "akunportal_active_user";
     const LOGIN_PAGE = "../index.html";
@@ -172,47 +239,88 @@
       if (!savedData) throw new Error("Belum login");
 
       activeUser = JSON.parse(savedData);
-      if (!activeUser || !activeUser.email) throw new Error("Sesi rusak");
+      if (!activeUser || !activeUser.email) throw new Error("Sesi tidak valid");
     } catch {
       window.location.replace(LOGIN_PAGE);
     }
   </script>
 </head>
 <body class="auth-checking">
-  <header class="navbar">
-    <div class="nav-brand">
-      <div class="nav-logo">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2c1.4 2.6 1.9 5.1.8 7.3 2.3-.9 4.9-.4 7.2 1.2-2.2 1.6-4.7 2.2-7.1 1.4 1.3 2.1 1.1 4.7-.4 7.1-1.5-2.4-1.7-5-.4-7.1-2.4.8-4.9.2-7.1-1.4 2.3-1.6 4.9-2.1 7.2-1.2-1.1-2.2-.6-4.7.8-7.3z"/>
-        </svg>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-mark">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2.5c1.2 2.4 1.6 4.7.7 6.8 2.1-.8 4.5-.4 6.6 1.1-2 1.5-4.3 2-6.5 1.3 1.2 1.9 1 4.3-.4 6.5-1.4-2.2-1.6-4.6-.4-6.5-2.2.7-4.5.2-6.5-1.3 2.1-1.5 4.5-1.9 6.6-1.1-.9-2.1-.5-4.4.7-6.8z"/>
+          </svg>
+        </div>
+        <span>SakuraPortal</span>
       </div>
-      <span>SakuraPortal</span>
-    </div>
 
-    <div class="nav-right">
-      <div class="user-chip">
-        <div class="nav-avatar" id="nav-avatar">U</div>
-        <span id="nav-username">User</span>
+      <div class="topbar-actions">
+        <div class="user-pill">
+          <div class="avatar" id="nav-avatar">U</div>
+          <span id="nav-username">User</span>
+        </div>
+        <button type="button" class="btn-logout" onclick="logout()">Keluar</button>
       </div>
-      <button type="button" class="btn-logout" onclick="logout()">Keluar</button>
     </div>
   </header>
 
-  <main class="container">
-    <section class="hero-banner">
-      <h1>Halo, <span id="hero-name">Pengguna</span>!</h1>
-      <p>Selamat datang di halaman utama.</p>
+  <main class="workspace">
+    <div class="page-head">
+      <h1>Halo, <span id="hero-name">Pengguna</span></h1>
+      <span class="status-tag">
+        <span class="status-dot"></span>
+        Sesi Terverifikasi
+      </span>
+    </div>
+
+    <section class="meta-grid">
+      <div class="meta-card">
+        <div class="meta-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="20" height="16" x="2" y="4" rx="2"/>
+            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+          </svg>
+        </div>
+        <div>
+          <span>Email Akun</span>
+          <strong id="card-email">-</strong>
+        </div>
+      </div>
+
+      <div class="meta-card">
+        <div class="meta-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+        </div>
+        <div>
+          <span>Tanggal Terdaftar</span>
+          <strong id="card-date">-</strong>
+        </div>
+      </div>
+
+      <div class="meta-card">
+        <div class="meta-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        </div>
+        <div>
+          <span>Keamanan</span>
+          <strong>SHA-256 Cloud Sync</strong>
+        </div>
+      </div>
     </section>
 
-    <section class="info-grid">
-      <div class="stat-card">
-        <span>Email</span>
-        <strong id="card-email">-</strong>
-      </div>
-      <div class="stat-card">
-        <span>Terdaftar</span>
-        <strong id="card-date">-</strong>
-      </div>
+    <section class="content-surface">
+      <h2>Area Konten Utama</h2>
+      <p>Halaman ini terlindungi sistem autentikasi. Ganti bagian ini dengan fitur, menu, atau konten utama aplikasi Anda.</p>
     </section>
   </main>
 
