@@ -7,6 +7,8 @@ if (localStorage.getItem(SESSION_KEY)) {
 }
 
 const alertBox = document.getElementById("alert-box");
+const alertIcon = alertBox.querySelector(".alert-icon");
+const alertText = document.getElementById("alert-text");
 const tabsContainer = document.getElementById("tabs-container");
 const loginForm = document.getElementById("login-form");
 const registerForm = document.getElementById("register-form");
@@ -14,6 +16,11 @@ const tabLogin = document.getElementById("tab-login");
 const tabRegister = document.getElementById("tab-register");
 const regPasswordInput = document.getElementById("reg-password");
 const strengthMeter = document.getElementById("strength-meter");
+
+const ICONS = {
+  error: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`,
+  success: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`
+};
 
 async function hashPassword(password) {
   const data = new TextEncoder().encode(password);
@@ -24,12 +31,13 @@ async function hashPassword(password) {
 }
 
 function showAlert(message, type = "error") {
-  alertBox.textContent = message;
+  alertIcon.innerHTML = ICONS[type] || ICONS.error;
+  alertText.textContent = message;
   alertBox.className = `alert ${type}`;
 }
 
 function clearAlert() {
-  alertBox.textContent = "";
+  alertText.textContent = "";
   alertBox.className = "alert hidden";
 }
 
@@ -53,7 +61,7 @@ function switchTab(mode) {
     tabRegister.classList.remove("active");
     tabLogin.setAttribute("aria-selected", "true");
     tabRegister.setAttribute("aria-selected", "false");
-    title.textContent = "Masuk";
+    title.textContent = "Masuk ke Akun";
   } else {
     tabsContainer.classList.add("register-mode");
     loginForm.classList.add("hidden");
@@ -62,7 +70,7 @@ function switchTab(mode) {
     tabRegister.classList.add("active");
     tabLogin.setAttribute("aria-selected", "false");
     tabRegister.setAttribute("aria-selected", "true");
-    title.textContent = "Daftar";
+    title.textContent = "Buat Akun Baru";
   }
 }
 
@@ -82,6 +90,14 @@ async function sendToSheets(payload) {
 tabLogin.addEventListener("click", () => switchTab("login"));
 tabRegister.addEventListener("click", () => switchTab("register"));
 
+// Bersihkan pesan error otomatis saat pengguna mulai mengetik ulang
+document.querySelectorAll(".auth-form input").forEach((input) => {
+  input.addEventListener("input", () => {
+    if (!alertBox.classList.contains("hidden")) clearAlert();
+  });
+});
+
+// Toggle Lihat / Sembunyikan Kata Sandi
 document.querySelectorAll(".toggle-pw").forEach((btn) => {
   btn.addEventListener("click", () => {
     const input = document.getElementById(btn.dataset.target);
@@ -95,6 +111,7 @@ document.querySelectorAll(".toggle-pw").forEach((btn) => {
   });
 });
 
+// Indikator Kekuatan Kata Sandi
 regPasswordInput.addEventListener("input", () => {
   const val = regPasswordInput.value;
   strengthMeter.classList.remove("weak", "medium", "strong");
@@ -110,7 +127,7 @@ regPasswordInput.addEventListener("input", () => {
   else strengthMeter.classList.add("strong");
 });
 
-// Proses Daftar
+// Submit Daftar
 registerForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   clearAlert();
@@ -121,12 +138,22 @@ registerForm.addEventListener("submit", async (e) => {
   const confirm = document.getElementById("reg-confirm").value;
   const btn = document.getElementById("btn-register");
 
-  if (password !== confirm) {
-    showAlert("Kata sandi tidak cocok.");
+  if (!name || !email || !password) {
+    showAlert("Lengkapi seluruh kolom pendaftaran.");
     return;
   }
 
-  setLoading(btn, true, "Menyimpan...", "Daftar");
+  if (password.length < 6) {
+    showAlert("Kata sandi minimal 6 karakter.");
+    return;
+  }
+
+  if (password !== confirm) {
+    showAlert("Konfirmasi kata sandi tidak cocok.");
+    return;
+  }
+
+  setLoading(btn, true, "Memproses...", "Buat Akun");
 
   try {
     const passwordHash = await hashPassword(password);
@@ -147,13 +174,13 @@ registerForm.addEventListener("submit", async (e) => {
       showAlert(result.message);
     }
   } catch (err) {
-    showAlert(err.message || "Gagal terhubung.");
+    showAlert(err.message || "Gagal terhubung ke server.");
   } finally {
-    setLoading(btn, false, "Menyimpan...", "Daftar");
+    setLoading(btn, false, "Memproses...", "Buat Akun");
   }
 });
 
-// Proses Masuk
+// Submit Masuk
 loginForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   clearAlert();
@@ -162,7 +189,12 @@ loginForm.addEventListener("submit", async (e) => {
   const password = document.getElementById("login-password").value;
   const btn = document.getElementById("btn-login");
 
-  setLoading(btn, true, "Memeriksa...", "Masuk");
+  if (!email || !password) {
+    showAlert("Masukkan email dan kata sandi.");
+    return;
+  }
+
+  setLoading(btn, true, "Memverifikasi...", "Masuk");
 
   try {
     const passwordHash = await hashPassword(password);
@@ -179,8 +211,8 @@ loginForm.addEventListener("submit", async (e) => {
       showAlert(result.message);
     }
   } catch (err) {
-    showAlert(err.message || "Gagal terhubung.");
+    showAlert(err.message || "Gagal terhubung ke server.");
   } finally {
-    setLoading(btn, false, "Memeriksa...", "Masuk");
+    setLoading(btn, false, "Memverifikasi...", "Masuk");
   }
 });
