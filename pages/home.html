@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Halaman Utama Website</title>
+  <title>Dashboard Utama</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
   <style>
     body.auth-checking {
@@ -14,72 +17,163 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
     }
 
     body {
       background: #f1f5f9;
       color: #0f172a;
+      min-height: 100vh;
     }
 
     .navbar {
-      background: #0f172a;
+      background: #090d16;
       color: #ffffff;
       padding: 14px 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      position: sticky;
+      top: 0;
+      z-index: 10;
     }
 
     .nav-brand {
-      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
       font-size: 1.05rem;
     }
 
-    .nav-user {
+    .nav-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 9px;
+      background: linear-gradient(135deg, #4f46e5, #0ea5e9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-right {
       display: flex;
       align-items: center;
       gap: 12px;
-      font-size: 0.9rem;
+    }
+
+    .user-chip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 5px 12px 5px 6px;
+      border-radius: 99px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .nav-avatar {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #4f46e5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
+      font-weight: 800;
     }
 
     .btn-logout {
-      background: #ef4444;
-      color: #ffffff;
-      border: none;
-      padding: 8px 14px;
-      border-radius: 8px;
-      font-weight: 600;
+      background: rgba(239, 68, 68, 0.16);
+      color: #fca5a5;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      padding: 7px 14px;
+      border-radius: 10px;
+      font-size: 0.84rem;
+      font-weight: 700;
       cursor: pointer;
+      transition: all 0.2s;
     }
 
     .btn-logout:hover {
       background: #dc2626;
+      color: #ffffff;
     }
 
-    .main-content {
-      max-width: 900px;
-      margin: 32px auto;
+    .container {
+      max-width: 960px;
+      margin: 28px auto;
       padding: 0 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
     }
 
-    .welcome-card {
+    .hero-banner {
+      background:
+        radial-gradient(circle at 90% 20%, rgba(56, 189, 248, 0.25), transparent 45%),
+        linear-gradient(135deg, #090d16 0%, #1e1b4b 60%, #1d4ed8 100%);
+      color: #ffffff;
+      border-radius: 22px;
+      padding: 30px 28px;
+      box-shadow: 0 18px 36px -12px rgba(15, 23, 42, 0.28);
+    }
+
+    .hero-badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      padding: 4px 10px;
+      border-radius: 99px;
+      background: rgba(52, 211, 153, 0.18);
+      color: #6ee7b7;
+      border: 1px solid rgba(52, 211, 153, 0.3);
+      margin-bottom: 12px;
+    }
+
+    .hero-banner h1 {
+      font-size: 1.65rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .hero-banner p {
+      font-size: 0.92rem;
+      color: rgba(255, 255, 255, 0.8);
+      line-height: 1.55;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+
+    .stat-card {
       background: #ffffff;
       border: 1px solid #e2e8f0;
       border-radius: 16px;
-      padding: 28px;
-      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
+      padding: 20px;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
     }
 
-    .welcome-card h1 {
-      font-size: 1.5rem;
-      margin-bottom: 8px;
+    .stat-card span {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #64748b;
+      margin-bottom: 6px;
     }
 
-    .welcome-card p {
-      color: #475569;
-      line-height: 1.6;
+    .stat-card strong {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #0f172a;
+      word-break: break-word;
     }
   </style>
 
@@ -102,29 +196,58 @@
 </head>
 <body class="auth-checking">
   <header class="navbar">
-    <div class="nav-brand">Website Utama</div>
-    <div class="nav-user">
-      <span>Halo, <strong id="nav-username">User</strong></span>
+    <div class="nav-brand">
+      <div class="nav-logo">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+          <path d="M2 17l10 5 10-5"/>
+          <path d="M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+      <span>AkunPortal</span>
+    </div>
+
+    <div class="nav-right">
+      <div class="user-chip">
+        <div class="nav-avatar" id="nav-avatar">U</div>
+        <span id="nav-username">User</span>
+      </div>
       <button type="button" class="btn-logout" onclick="logout()">Keluar</button>
     </div>
   </header>
 
-  <main class="main-content">
-    <section class="welcome-card">
-      <h1>Selamat Datang, <span id="hero-name">Pengguna</span>!</h1>
-      <p>
-        Halaman ini hanya bisa diakses setelah login menggunakan akun
-        <strong id="hero-email">-</strong>. Silakan isi bagian ini dengan konten utama website kamu.
-      </p>
+  <main class="container">
+    <section class="hero-banner">
+      <span class="hero-badge">SESI AKTIF &amp; TERVERIFIKASI</span>
+      <h1>Halo, <span id="hero-name">Pengguna</span>!</h1>
+      <p>Selamat datang di halaman utama website. Area di bawah ini bisa kamu isi dengan fitur atau konten utama proyekmu.</p>
+    </section>
+
+    <section class="info-grid">
+      <div class="stat-card">
+        <span>Email Terdaftar</span>
+        <strong id="card-email">-</strong>
+      </div>
+      <div class="stat-card">
+        <span>Waktu Pendaftaran</span>
+        <strong id="card-date">-</strong>
+      </div>
+      <div class="stat-card">
+        <span>Status Penyimpanan</span>
+        <strong>Cloud Database Aktif</strong>
+      </div>
     </section>
   </main>
 
   <script>
     if (activeUser) {
       document.body.classList.remove("auth-checking");
+      const initial = activeUser.name.charAt(0).toUpperCase();
+      document.getElementById("nav-avatar").textContent = initial;
       document.getElementById("nav-username").textContent = activeUser.name;
       document.getElementById("hero-name").textContent = activeUser.name;
-      document.getElementById("hero-email").textContent = activeUser.email;
+      document.getElementById("card-email").textContent = activeUser.email;
+      document.getElementById("card-date").textContent = activeUser.createdAt || "-";
     }
 
     function logout() {
