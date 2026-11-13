@@ -10,13 +10,20 @@
   <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 <body>
-  <main class="app-wrapper">
+  <main class="app-wrapper" id="app-wrapper">
     <section id="auth-shell" class="auth-shell">
       <!-- PANEL BRANDING: Kiri di Desktop, Header Ringkas di HP -->
       <aside class="brand-panel">
         <div class="brand-grid" aria-hidden="true"></div>
+        <div class="brand-glow" aria-hidden="true"></div>
 
-        <div class="brand-top">
+        <!-- Kelopak Sakura Halus -->
+        <div class="sakura-petals" aria-hidden="true">
+          <span></span><span></span><span></span>
+          <span></span><span></span><span></span>
+        </div>
+
+        <div class="brand-top anim-fade" style="--delay: 0.05s">
           <div class="brand-badge">
             <div class="brand-mark" aria-hidden="true">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
@@ -29,12 +36,14 @@
           <span class="env-badge">CLOUD</span>
         </div>
 
-        <!-- Emblem Geometris Sakura Minimalis (Khusus Desktop) -->
-        <div class="mon-crest" aria-hidden="true">
-          <svg viewBox="0 0 220 220" fill="none">
-            <circle cx="110" cy="110" r="96" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
-            <circle cx="110" cy="110" r="68" stroke="rgba(255,255,255,0.11)" stroke-width="1" stroke-dasharray="3 5"/>
-            <circle cx="110" cy="110" r="40" stroke="rgba(244,63,94,0.35)" stroke-width="1"/>
+        <!-- Emblem Geometris Sakura (Khusus Desktop) -->
+        <div class="mon-crest anim-scale" style="--delay: 0.15s" aria-hidden="true">
+          <svg class="crest-ring-outer" viewBox="0 0 220 220" fill="none">
+            <circle cx="110" cy="110" r="96" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+            <circle cx="110" cy="110" r="68" stroke="rgba(255,255,255,0.13)" stroke-width="1" stroke-dasharray="3 6"/>
+          </svg>
+          <svg class="crest-flower" viewBox="0 0 220 220" fill="none">
+            <circle cx="110" cy="110" r="40" stroke="rgba(244,63,94,0.38)" stroke-width="1"/>
             <path d="M110 52C118 69 120 85 114 99C128 93 144 96 159 106C144 116 128 119 114 113C122 126 120 143 110 160C100 143 98 126 106 113C92 119 76 116 61 106C76 96 92 93 106 99C100 85 102 69 110 52Z" fill="url(#beniGrad)"/>
             <circle cx="110" cy="106" r="6" fill="#140d11"/>
             <defs>
@@ -46,20 +55,23 @@
           </svg>
         </div>
 
-        <div class="brand-foot">
-          <span>Autentikasi Terenkripsi</span>
+        <div class="brand-foot anim-fade" style="--delay: 0.25s">
+          <span class="pulse-dot"></span>
+          <span>SHA-256 Encrypted</span>
         </div>
       </aside>
 
       <!-- PANEL FORM: Kanan di Desktop, Sheet Utama di HP -->
       <div class="form-panel">
+        <div class="sheet-handle" aria-hidden="true"></div>
+
         <div class="form-container">
-          <div class="form-header">
+          <div class="form-header anim-up" style="--delay: 0.08s">
             <h1 id="form-title">Masuk ke Akun</h1>
           </div>
 
           <!-- Segmented Control Tabs -->
-          <div id="tabs-container" class="tabs" role="tablist">
+          <div id="tabs-container" class="tabs anim-up" style="--delay: 0.14s" role="tablist">
             <div class="tab-glider" aria-hidden="true"></div>
             <button type="button" id="tab-login" class="tab-btn active" role="tab" aria-selected="true">Masuk</button>
             <button type="button" id="tab-register" class="tab-btn" role="tab" aria-selected="false">Daftar</button>
@@ -72,7 +84,7 @@
 
           <!-- FORM MASUK -->
           <form id="login-form" class="auth-form" novalidate>
-            <div class="form-group">
+            <div class="form-group anim-up" style="--delay: 0.18s">
               <label for="login-email">Email</label>
               <div class="input-box">
                 <span class="input-icon">
@@ -85,7 +97,7 @@
               </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group anim-up" style="--delay: 0.24s">
               <label for="login-password">Kata Sandi</label>
               <div class="input-box">
                 <span class="input-icon">
@@ -110,7 +122,7 @@
               </div>
             </div>
 
-            <button type="submit" id="btn-login" class="btn-primary">
+            <button type="submit" id="btn-login" class="btn-primary anim-up" style="--delay: 0.3s">
               <span class="btn-text">Masuk</span>
               <span class="spinner hidden" aria-hidden="true"></span>
             </button>
