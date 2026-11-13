@@ -6,6 +6,7 @@ if (localStorage.getItem(SESSION_KEY)) {
   window.location.replace(HOME_PAGE);
 }
 
+const appWrapper = document.getElementById("app-wrapper");
 const alertBox = document.getElementById("alert-box");
 const alertIcon = alertBox.querySelector(".alert-icon");
 const alertText = document.getElementById("alert-text");
@@ -30,10 +31,19 @@ async function hashPassword(password) {
     .join("");
 }
 
+function triggerShake(element) {
+  element.classList.remove("shake");
+  void element.offsetWidth;
+  element.classList.add("shake");
+}
+
 function showAlert(message, type = "error") {
   alertIcon.innerHTML = ICONS[type] || ICONS.error;
   alertText.textContent = message;
   alertBox.className = `alert ${type}`;
+  if (type === "error") {
+    triggerShake(alertBox);
+  }
 }
 
 function clearAlert() {
@@ -56,6 +66,7 @@ function switchTab(mode) {
   if (mode === "login") {
     tabsContainer.classList.remove("register-mode");
     loginForm.classList.remove("hidden");
+    loginForm.classList.add("tab-switched");
     registerForm.classList.add("hidden");
     tabLogin.classList.add("active");
     tabRegister.classList.remove("active");
@@ -66,12 +77,20 @@ function switchTab(mode) {
     tabsContainer.classList.add("register-mode");
     loginForm.classList.add("hidden");
     registerForm.classList.remove("hidden");
+    registerForm.classList.add("tab-switched");
     tabLogin.classList.remove("active");
     tabRegister.classList.add("active");
     tabLogin.setAttribute("aria-selected", "false");
     tabRegister.setAttribute("aria-selected", "true");
     title.textContent = "Buat Akun Baru";
   }
+}
+
+function navigateTo(url) {
+  appWrapper.classList.add("is-leaving");
+  setTimeout(() => {
+    window.location.replace(url);
+  }, 220);
 }
 
 async function sendToSheets(payload) {
@@ -90,14 +109,12 @@ async function sendToSheets(payload) {
 tabLogin.addEventListener("click", () => switchTab("login"));
 tabRegister.addEventListener("click", () => switchTab("register"));
 
-// Bersihkan pesan error otomatis saat pengguna mulai mengetik ulang
 document.querySelectorAll(".auth-form input").forEach((input) => {
   input.addEventListener("input", () => {
     if (!alertBox.classList.contains("hidden")) clearAlert();
   });
 });
 
-// Toggle Lihat / Sembunyikan Kata Sandi
 document.querySelectorAll(".toggle-pw").forEach((btn) => {
   btn.addEventListener("click", () => {
     const input = document.getElementById(btn.dataset.target);
@@ -111,7 +128,6 @@ document.querySelectorAll(".toggle-pw").forEach((btn) => {
   });
 });
 
-// Indikator Kekuatan Kata Sandi
 regPasswordInput.addEventListener("input", () => {
   const val = regPasswordInput.value;
   strengthMeter.classList.remove("weak", "medium", "strong");
@@ -206,7 +222,7 @@ loginForm.addEventListener("submit", async (e) => {
 
     if (result.status === "success") {
       localStorage.setItem(SESSION_KEY, JSON.stringify(result.user));
-      window.location.replace(HOME_PAGE);
+      navigateTo(HOME_PAGE);
     } else {
       showAlert(result.message);
     }
