@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Masuk &amp; Daftar Akun</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <main class="app-wrapper">
+    <section id="auth-shell" class="auth-shell">
+      <!-- Panel Kiri (Desktop) / Header Atas (HP) -->
+      <div class="brand-panel">
+        <div class="brand-top">
+          <div class="brand-badge">
+            <span class="brand-icon">A</span>
+            <span class="brand-name">AkunPortal</span>
+          </div>
+          <span class="status-pill">Cloud Aktif</span>
+        </div>
+
+        <div class="brand-copy">
+          <h2>Satu Akun untuk Semua Perangkat</h2>
+          <p>Daftar sekali dan akses akun Anda dari HP maupun laptop kapan saja.</p>
+        </div>
+
+        <ul class="brand-features">
+          <li>Data tersimpan otomatis di cloud</li>
+          <li>Kata sandi terenkripsi SHA-256</li>
+          <li>Tampilan khusus Desktop &amp; Mobile</li>
+        </ul>
+      </div>
+
+      <!-- Panel Kanan (Desktop) / Kartu Bawah (HP) -->
+      <div class="form-panel">
+        <div class="form-header">
+          <h1 id="form-title">Selamat Datang</h1>
+          <p id="form-subtitle">Masuk ke akun Anda untuk melanjutkan</p>
+        </div>
+
+        <div class="tabs" role="tablist">
+          <button type="button" id="tab-login" class="tab-btn active">Masuk</button>
+          <button type="button" id="tab-register" class="tab-btn">Daftar</button>
+        </div>
+
+        <div id="alert-box" class="alert hidden" role="alert"></div>
+
+        <!-- Form Masuk -->
+        <form id="login-form" class="auth-form">
+          <div class="form-group">
+            <label for="login-email">Email</label>
+            <input type="email" id="login-email" placeholder="nama@email.com" required autocomplete="email" />
+          </div>
+
+          <div class="form-group">
+            <label for="login-password">Kata Sandi</label>
+            <div class="password-wrapper">
+              <input type="password" id="login-password" placeholder="Masukkan kata sandi" required autocomplete="current-password" />
+              <button type="button" class="toggle-pw" data-target="login-password">Lihat</button>
+            </div>
+          </div>
+
+          <button type="submit" id="btn-login" class="btn-primary">Masuk Sekarang</button>
+        </form>
+
+        <!-- Form Daftar -->
+        <form id="register-form" class="auth-form hidden">
+          <div class="form-group">
+            <label for="reg-name">Nama Lengkap</label>
+            <input type="text" id="reg-name" placeholder="Masukkan nama lengkap" required autocomplete="name" />
+          </div>
+
+          <div class="form-group">
+            <label for="reg-email">Email</label>
+            <input type="email" id="reg-email" placeholder="nama@email.com" required autocomplete="email" />
+          </div>
+
+          <div class="form-group">
+            <label for="reg-password">Kata Sandi</label>
+            <div class="password-wrapper">
+              <input type="password" id="reg-password" placeholder="Minimal 6 karakter" minlength="6" required autocomplete="new-password" />
+              <button type="button" class="toggle-pw" data-target="reg-password">Lihat</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="reg-confirm">Konfirmasi Kata Sandi</label>
+            <input type="password" id="reg-confirm" placeholder="Ulangi kata sandi" minlength="6" required autocomplete="new-password" />
+          </div>
+
+          <button type="submit" id="btn-register" class="btn-primary">Buat Akun Baru</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <script src="assets/js/script.js"></script>
+</body>
+</html>
