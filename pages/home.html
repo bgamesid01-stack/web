@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#120b0f" />
-  <title>Workspace — SakuraPortal</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23be123c'/%3E%3Cpath d='M16 5.5c1.5 3 2 5.9.9 8.5 2.6-1 5.6-.5 8.2 1.4-2.5 1.9-5.4 2.5-8.1 1.6 1.5 2.4 1.2 5.4-.5 8.1-1.7-2.7-2-5.7-.5-8.1-2.7.9-5.6.3-8.1-1.6 2.6-1.9 5.6-2.4 8.2-1.4-1.1-2.6-.6-5.5.9-8.5z' fill='%23ffffff'/%3E%3C/svg%3E" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>Ruang Kelas — Portal Akademik Siswa</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232563eb'/%3E%3Cpath d='M16 7L5 12.5L16 18L27 12.5L16 7Z' fill='%23ffffff'/%3E%3Cpath d='M9 15.5V21C9 21 12 23.5 16 23.5C20 23.5 23 21 23 21V15.5L16 19L9 15.5Z' fill='%23dbeafe'/%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -19,21 +19,27 @@
       <div class="topbar-left">
         <div class="brand">
           <div class="brand-mark" aria-hidden="true">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2.5c1.2 2.4 1.6 4.7.7 6.8 2.1-.8 4.5-.4 6.6 1.1-2 1.5-4.3 2-6.5 1.3 1.2 1.9 1 4.3-.4 6.5-1.4-2.2-1.6-4.6-.4-6.5-2.2.7-4.5.2-6.5-1.3 2.1-1.5 4.5-1.9 6.6-1.1-.9-2.1-.5-4.4.7-6.8z"/>
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+              <path d="M6 12v5c3 3 9 3 12 0v-5"/>
             </svg>
           </div>
-          <span>SakuraPortal</span>
+          <span id="nav-class-name">Kelas XII IPA 1</span>
         </div>
-        <span class="nav-divider" aria-hidden="true"></span>
-        <span class="nav-context">Workspace</span>
+
+        <nav class="main-nav" aria-label="Navigasi Portal Kelas">
+          <a href="#section-overview" class="nav-link active">Beranda</a>
+          <a href="#section-schedule" class="nav-link">Jadwal & Piket</a>
+          <a href="#section-tasks" class="nav-link">Tugas Kelas</a>
+          <a href="#section-announcements" class="nav-link">Pengumuman</a>
+        </nav>
       </div>
 
       <div class="topbar-actions">
         <span class="live-clock" id="live-clock" aria-label="Waktu saat ini">--:--</span>
-        <div class="user-pill" title="Akun Aktif">
-          <div class="avatar" id="nav-avatar">U</div>
-          <span id="nav-username">User</span>
+        <div class="user-pill" title="Siswa Terautentikasi">
+          <div class="avatar" id="nav-avatar">S</div>
+          <span id="nav-username">Siswa</span>
         </div>
         <button type="button" id="btn-logout-trigger" class="btn-logout">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -49,41 +55,40 @@
 
   <!-- MAIN WORKSPACE -->
   <main class="workspace" id="workspace">
-    <!-- Hero Header -->
-    <section class="page-head anim-up" style="--delay: 0.04s">
-      <div class="hero-copy">
-        <p class="greeting-eyebrow" id="greeting-eyebrow">Selamat Datang Kembali</p>
-        <h1>Halo, <span id="hero-name">Pengguna</span></h1>
+    <!-- Hero Banner Kelas -->
+    <section id="section-overview" class="class-hero anim-up" style="--delay: 0.04s">
+      <div class="hero-main">
+        <div class="hero-badges">
+          <span class="year-badge" id="hero-academic-year">Tahun Ajaran 2026/2027</span>
+          <span class="status-tag">
+            <span class="status-dot"></span>
+            Portal Aktif
+          </span>
+        </div>
+        <p class="greeting-eyebrow" id="greeting-eyebrow">Selamat Datang,</p>
+        <h1>Halo, <span id="hero-name">Siswa</span></h1>
+        <p class="hero-meta">
+          Wali Kelas: <strong id="hero-homeroom">Ibu Ratna Sari, S.Pd.</strong> &bull;
+          Ruang: <strong id="hero-room">R. 204 (Gedung B)</strong> &bull;
+          Ketua Kelas: <strong id="hero-leader">Ahmad Fauzan</strong>
+        </p>
       </div>
 
-      <div class="head-badges">
-        <span class="status-tag">
-          <span class="status-dot"></span>
-          Sesi Terautentikasi
-        </span>
+      <div class="hero-actions">
+        <button type="button" id="btn-edit-class" class="btn-hero-outline">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 20h9"/>
+            <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+          </svg>
+          <span>Atur Identitas Kelas</span>
+        </button>
       </div>
     </section>
 
-    <!-- 4 KPI / Account Telemetry Cards -->
-    <section class="meta-grid" aria-label="Ringkasan Akun">
+    <!-- 4 KPI / Ringkasan Akademik Kelas -->
+    <section class="meta-grid" aria-label="Ringkasan Kelas Hari Ini">
       <article class="meta-card anim-up" style="--delay: 0.09s">
-        <div class="meta-icon" aria-hidden="true">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect width="20" height="16" x="2" y="4" rx="2"/>
-            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
-          </svg>
-        </div>
-        <div class="meta-body">
-          <div class="meta-top-row">
-            <span>Email Terdaftar</span>
-            <button type="button" id="btn-copy-email" class="mini-action" title="Salin alamat email">Salin</button>
-          </div>
-          <strong id="card-email">-</strong>
-        </div>
-      </article>
-
-      <article class="meta-card anim-up" style="--delay: 0.14s">
-        <div class="meta-icon" aria-hidden="true">
+        <div class="meta-icon blue" aria-hidden="true">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
             <line x1="16" y1="2" x2="16" y2="6"/>
@@ -92,140 +97,269 @@
           </svg>
         </div>
         <div class="meta-body">
-          <span>Tanggal Bergabung</span>
-          <strong id="card-date">-</strong>
+          <span id="kpi-day-label">Jadwal Hari Ini</span>
+          <strong id="kpi-subject-count">0 Mata Pelajaran</strong>
+          <small id="kpi-today-date">-</small>
+        </div>
+      </article>
+
+      <article class="meta-card anim-up" style="--delay: 0.14s">
+        <div class="meta-icon amber" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 11l3 3L22 4"/>
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+          </svg>
+        </div>
+        <div class="meta-body">
+          <span>Tugas & PR Aktif</span>
+          <strong id="kpi-pending-tasks">0 Tugas Tersisa</strong>
+          <small id="kpi-task-progress">0 dari 0 selesai</small>
         </div>
       </article>
 
       <article class="meta-card anim-up" style="--delay: 0.19s">
-        <div class="meta-icon" aria-hidden="true">
+        <div class="meta-icon emerald" aria-hidden="true">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
           </svg>
         </div>
         <div class="meta-body">
-          <span>Enkripsi & Cloud</span>
-          <strong>SHA-256 • Google Sheets</strong>
+          <span>Regu Piket Hari Ini</span>
+          <strong id="kpi-piket-group">-</strong>
+          <small id="kpi-piket-members">-</small>
         </div>
       </article>
 
       <article class="meta-card anim-up" style="--delay: 0.24s">
-        <div class="meta-icon" aria-hidden="true">
+        <div class="meta-icon indigo" aria-hidden="true">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"/>
-            <polyline points="12 6 12 12 16 14"/>
+            <rect width="20" height="16" x="2" y="4" rx="2"/>
+            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
           </svg>
         </div>
         <div class="meta-body">
-          <span>Durasi Sesi Aktif</span>
-          <strong id="session-timer">00:00:00</strong>
+          <div class="meta-top-row">
+            <span>Akun Siswa</span>
+            <button type="button" id="btn-copy-email" class="mini-action" title="Salin alamat email">Salin</button>
+          </div>
+          <strong id="card-email">-</strong>
+          <small>Bergabung: <span id="card-date">-</span></small>
         </div>
       </article>
     </section>
 
-    <!-- Main Modular Workspace Grid -->
+    <!-- GRID UTAMA: JADWAL PELAJARAN & TUGAS KELAS -->
     <section class="workspace-grid">
-      <!-- Kolom Utama: Manajemen Tugas & Catatan Workspace -->
-      <article class="panel-card anim-up" style="--delay: 0.28s">
-        <div class="panel-header">
-          <div>
-            <h2>Catatan & Tugas Workspace</h2>
-            <p class="panel-desc">Tersimpan otomatis pada profil lokal akun Anda.</p>
-          </div>
-          <span class="counter-badge" id="task-counter">0/0 Selesai</span>
-        </div>
-
-        <form id="task-form" class="task-form">
-          <input
-            type="text"
-            id="task-input"
-            placeholder="Tulis rencana kerja atau catatan baru..."
-            maxlength="140"
-            required
-            autocomplete="off"
-          />
-          <select id="task-tag" aria-label="Kategori tugas">
-            <option value="Kerja">Kerja</option>
-            <option value="Penting">Penting</option>
-            <option value="Pribadi">Pribadi</option>
-          </select>
-          <button type="submit" class="btn-add">Tambah</button>
-        </form>
-
-        <div class="filter-bar" role="tablist" aria-label="Filter Tugas">
-          <button type="button" class="filter-chip active" data-filter="all">Semua</button>
-          <button type="button" class="filter-chip" data-filter="active">Aktif</button>
-          <button type="button" class="filter-chip" data-filter="completed">Selesai</button>
-        </div>
-
-        <ul id="task-list" class="task-list" aria-live="polite"></ul>
-
-        <div id="task-empty" class="empty-state hidden">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-            <polyline points="14 2 14 8 20 8"/>
-            <line x1="16" y1="13" x2="8" y2="13"/>
-            <line x1="16" y1="17" x2="8" y2="17"/>
-          </svg>
-          <p>Belum ada item pada kategori ini.</p>
-        </div>
-      </article>
-
-      <!-- Kolom Kanan: Inspector Sesi & Log Aktivitas -->
-      <div class="side-stack">
-        <article class="panel-card anim-up" style="--delay: 0.33s">
+      <!-- Kolom Kiri (Utama): Jadwal Pelajaran & Tugas Kelas -->
+      <div class="main-stack">
+        <!-- Modul 1: Jadwal Pelajaran Mingguan -->
+        <article id="section-schedule" class="panel-card anim-up" style="--delay: 0.28s">
           <div class="panel-header">
             <div>
-              <h2>Inspector Akun & Sesi</h2>
-              <p class="panel-desc">Metadata autentikasi aktif saat ini.</p>
+              <h2>Jadwal Mata Pelajaran</h2>
+              <p class="panel-desc">Pilih hari untuk melihat jam pelajaran dan guru pengampu.</p>
             </div>
-            <span class="surface-badge">Terproteksi</span>
+            <span class="counter-badge" id="schedule-day-badge">Senin</span>
+          </div>
+
+          <div class="day-tabs" id="day-tabs" role="tablist" aria-label="Pilih Hari Pelajaran">
+            <button type="button" class="day-chip" data-day="Senin">Senin</button>
+            <button type="button" class="day-chip" data-day="Selasa">Selasa</button>
+            <button type="button" class="day-chip" data-day="Rabu">Rabu</button>
+            <button type="button" class="day-chip" data-day="Kamis">Kamis</button>
+            <button type="button" class="day-chip" data-day="Jumat">Jumat</button>
+            <button type="button" class="day-chip" data-day="Sabtu">Sabtu</button>
+          </div>
+
+          <div class="schedule-list" id="schedule-list"></div>
+        </article>
+
+        <!-- Modul 2: Daftar Tugas & PR Kelas -->
+        <article id="section-tasks" class="panel-card anim-up" style="--delay: 0.33s">
+          <div class="panel-header">
+            <div>
+              <h2>Daftar Tugas & PR Kelas</h2>
+              <p class="panel-desc">Catat tenggat tugas mata pelajaran dan pantau progres pengerjaan.</p>
+            </div>
+            <span class="counter-badge" id="task-counter">0/0 Selesai</span>
+          </div>
+
+          <form id="task-form" class="task-form">
+            <input
+              type="text"
+              id="task-title-input"
+              placeholder="Judul tugas (cth: Latihan Soal Integral Bab 4)..."
+              maxlength="120"
+              required
+              autocomplete="off"
+            />
+            <select id="task-subject-input" aria-label="Mata Pelajaran">
+              <option value="Matematika">Matematika</option>
+              <option value="Fisika">Fisika</option>
+              <option value="Kimia">Kimia</option>
+              <option value="Biologi">Biologi</option>
+              <option value="Bahasa Indonesia">B. Indonesia</option>
+              <option value="Bahasa Inggris">B. Inggris</option>
+              <option value="Informatika">Informatika</option>
+              <option value="Umum">Umum</option>
+            </select>
+            <input type="date" id="task-due-input" aria-label="Tenggat Waktu" required />
+            <button type="submit" class="btn-add">Tambah</button>
+          </form>
+
+          <div class="filter-bar" role="tablist" aria-label="Filter Tugas Kelas">
+            <button type="button" class="filter-chip active" data-filter="all">Semua</button>
+            <button type="button" class="filter-chip" data-filter="active">Belum Selesai</button>
+            <button type="button" class="filter-chip" data-filter="completed">Sudah Selesai</button>
+          </div>
+
+          <ul id="task-list" class="task-list" aria-live="polite"></ul>
+
+          <div id="task-empty" class="empty-state hidden">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+            </svg>
+            <p>Belum ada daftar tugas pada kategori ini.</p>
+          </div>
+        </article>
+      </div>
+
+      <!-- Kolom Kanan: Papan Pengumuman, Jadwal Piket & Profil Sesi -->
+      <div class="side-stack">
+        <!-- Modul 3: Papan Pengumuman Kelas -->
+        <article id="section-announcements" class="panel-card anim-up" style="--delay: 0.3s">
+          <div class="panel-header">
+            <div>
+              <h2>Papan Pengumuman</h2>
+              <p class="panel-desc">Info penting kegiatan & administrasi kelas.</p>
+            </div>
+            <button type="button" id="btn-toggle-announce" class="btn-mini-primary">+ Info</button>
+          </div>
+
+          <form id="announce-form" class="announce-form hidden">
+            <input
+              type="text"
+              id="announce-title"
+              placeholder="Judul pengumuman..."
+              maxlength="80"
+              required
+            />
+            <textarea
+              id="announce-body"
+              rows="2"
+              placeholder="Isi pengumuman singkat untuk anggota kelas..."
+              maxlength="240"
+              required
+            ></textarea>
+            <div class="announce-form-foot">
+              <select id="announce-category" aria-label="Kategori Pengumuman">
+                <option value="Akademik">Akademik</option>
+                <option value="Kegiatan">Kegiatan</option>
+                <option value="Kas & Administrasi">Kas & Administrasi</option>
+              </select>
+              <button type="submit" class="btn-add">Terbitkan</button>
+            </div>
+          </form>
+
+          <div id="announcement-list" class="announcement-list"></div>
+        </article>
+
+        <!-- Modul 4: Jadwal Piket Kebersihan Kelas -->
+        <article class="panel-card anim-up" style="--delay: 0.35s">
+          <div class="panel-header">
+            <div>
+              <h2>Jadwal Piket Kelas</h2>
+              <p class="panel-desc">Pembagian regu piket kebersihan harian.</p>
+            </div>
+            <span class="surface-badge">6 Regu</span>
+          </div>
+
+          <div id="piket-list" class="piket-list"></div>
+        </article>
+
+        <!-- Modul 5: Kartu Sesi & Ekspor Data -->
+        <article class="panel-card anim-up" style="--delay: 0.4s">
+          <div class="panel-header">
+            <div>
+              <h2>Kartu Sesi Siswa</h2>
+              <p class="panel-desc">Status keamanan & sesi cloud aktif.</p>
+            </div>
+            <span class="surface-badge">SHA-256</span>
           </div>
 
           <dl class="info-list">
             <div class="info-row">
-              <dt>Nama Profil</dt>
+              <dt>Nama Siswa</dt>
               <dd id="detail-name">-</dd>
             </div>
             <div class="info-row">
-              <dt>Penyimpanan Sesi</dt>
+              <dt>Mode Sesi</dt>
               <dd id="detail-storage">-</dd>
             </div>
             <div class="info-row">
-              <dt>Waktu Masuk</dt>
-              <dd id="detail-login-time">-</dd>
+              <dt>Durasi Aktif</dt>
+              <dd><strong id="session-timer">00:00:00</strong></dd>
             </div>
             <div class="info-row">
-              <dt>Token Sidik Jari</dt>
+              <dt>ID Anggota</dt>
               <dd><code id="detail-fingerprint">-</code></dd>
             </div>
           </dl>
 
-          <div class="panel-actions">
-            <button type="button" id="btn-export-session" class="btn-secondary">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                <polyline points="7 10 12 15 17 10"/>
-                <line x1="12" y1="15" x2="12" y2="3"/>
-              </svg>
-              <span>Ekspor Ringkasan Sesi (.json)</span>
-            </button>
-          </div>
-        </article>
-
-        <article class="panel-card anim-up" style="--delay: 0.38s">
-          <div class="panel-header">
-            <div>
-              <h2>Log Aktivitas Sesi</h2>
-              <p class="panel-desc">Jejak interaksi real-time di halaman ini.</p>
-            </div>
-          </div>
-
-          <ul id="activity-list" class="activity-list"></ul>
+          <button type="button" id="btn-export-session" class="btn-secondary">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            <span>Unduh Rekap Kelas (.json)</span>
+          </button>
         </article>
       </div>
     </section>
   </main>
+
+  <!-- MODAL PENGATURAN IDENTITAS KELAS -->
+  <div id="class-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="class-modal-title">
+    <div class="modal-card">
+      <h3 id="class-modal-title">Atur Identitas Kelas</h3>
+      <p>Sesuaikan nama kelas, wali kelas, ruang belajar, dan ketua kelas agar tampil di seluruh portal.</p>
+
+      <form id="class-settings-form" class="modal-form">
+        <div class="modal-field">
+          <label for="input-class-name">Nama Kelas</label>
+          <input type="text" id="input-class-name" required maxlength="40" />
+        </div>
+        <div class="modal-field">
+          <label for="input-academic-year">Tahun Ajaran</label>
+          <input type="text" id="input-academic-year" required maxlength="30" />
+        </div>
+        <div class="modal-field">
+          <label for="input-homeroom">Wali Kelas</label>
+          <input type="text" id="input-homeroom" required maxlength="60" />
+        </div>
+        <div class="modal-field">
+          <label for="input-room">Ruang Kelas</label>
+          <input type="text" id="input-room" required maxlength="40" />
+        </div>
+        <div class="modal-field">
+          <label for="input-leader">Ketua Kelas</label>
+          <input type="text" id="input-leader" required maxlength="50" />
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" id="btn-cancel-class" class="btn-ghost">Batal</button>
+          <button type="submit" class="btn-primary-modal">Simpan Perubahan</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <!-- MODAL KONFIRMASI LOGOUT -->
   <div id="logout-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
@@ -237,8 +371,8 @@
           <line x1="21" y1="12" x2="9" y2="12"/>
         </svg>
       </div>
-      <h3 id="modal-title">Akhiri Sesi Sekarang?</h3>
-      <p>Anda akan keluar dari workspace dan perlu memasukkan kredensial kembali untuk mengakses halaman ini.</p>
+      <h3 id="modal-title">Keluar dari Portal Kelas?</h3>
+      <p>Sesi akun siswa Anda akan diakhiri pada perangkat ini. Anda dapat masuk kembali kapan saja.</p>
       <div class="modal-actions">
         <button type="button" id="btn-cancel-logout" class="btn-ghost">Batal</button>
         <button type="button" id="btn-confirm-logout" class="btn-danger">Ya, Keluar</button>
