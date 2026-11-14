@@ -9,12 +9,12 @@ window.activeUser = null;
     const savedData = localData || sessionData;
 
     if (!savedData) {
-      throw new Error("Sesi tidak ditemukan");
+      throw new Error("Sesi siswa tidak ditemukan");
     }
 
     const parsedUser = JSON.parse(savedData);
     if (!parsedUser || typeof parsedUser !== "object" || !parsedUser.email) {
-      throw new Error("Struktur sesi tidak valid");
+      throw new Error("Struktur sesi siswa tidak valid");
     }
 
     if (!parsedUser.loginAt) {

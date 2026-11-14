@@ -1,9 +1,8 @@
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzGg8W7FfnM8H-G2lpdkMMhFKcZ3lEXkqygZxhqK2fZnhHv1wgvgW4I0Xw-7ga-jWem/exec";
+const SCRIPT_URL = "PASTE_URL_WEB_APP_APPS_SCRIPT_DISINI";
 const SESSION_KEY = "akunportal_active_user";
 const HOME_PAGE = "pages/home.html";
 const REQUEST_TIMEOUT_MS = 15000;
 
-// Cek apakah sesi sudah ada di localStorage atau sessionStorage
 (function checkExistingSession() {
   try {
     const raw = localStorage.getItem(SESSION_KEY) || sessionStorage.getItem(SESSION_KEY);
@@ -100,8 +99,8 @@ function switchTab(mode) {
     tabRegister.classList.remove("active");
     tabLogin.setAttribute("aria-selected", "true");
     tabRegister.setAttribute("aria-selected", "false");
-    title.textContent = "Masuk ke Akun";
-    subtitle.textContent = "Masukkan kredensial Anda untuk membuka workspace.";
+    title.textContent = "Masuk ke Ruang Kelas";
+    subtitle.textContent = "Masukkan email dan kata sandi akun siswa Anda.";
   } else {
     tabsContainer.classList.add("register-mode");
     loginForm.classList.add("hidden");
@@ -111,8 +110,8 @@ function switchTab(mode) {
     tabRegister.classList.add("active");
     tabLogin.setAttribute("aria-selected", "false");
     tabRegister.setAttribute("aria-selected", "true");
-    title.textContent = "Buat Akun Baru";
-    subtitle.textContent = "Daftarkan akun baru untuk sinkronisasi cloud terenkripsi.";
+    title.textContent = "Aktivasi Akun Siswa";
+    subtitle.textContent = "Daftarkan nama lengkap dan email Anda untuk masuk ke portal kelas.";
   }
 }
 
@@ -125,7 +124,7 @@ function navigateTo(url) {
 
 async function sendToSheets(payload) {
   if (!SCRIPT_URL || SCRIPT_URL.includes("PASTE_URL")) {
-    throw new Error("Konfigurasi server belum lengkap: pasang URL Web App Google Apps Script di assets/js/script.js.");
+    throw new Error("URL Google Apps Script belum dipasang di assets/js/script.js.");
   }
 
   const controller = new AbortController();
@@ -164,7 +163,6 @@ async function sendToSheets(payload) {
 tabLogin.addEventListener("click", () => switchTab("login"));
 tabRegister.addEventListener("click", () => switchTab("register"));
 
-// Navigasi keyboard (Panah Kiri/Kanan) pada tab
 tabsContainer.addEventListener("keydown", (e) => {
   if (e.key === "ArrowRight") {
     switchTab("register");
@@ -224,7 +222,7 @@ regPasswordInput.addEventListener("input", () => {
   }
 });
 
-// Submit Pendaftaran
+// Submit Aktivasi / Daftar Akun Siswa
 registerForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   clearAlert();
@@ -236,17 +234,17 @@ registerForm.addEventListener("submit", async (e) => {
   const btn = document.getElementById("btn-register");
 
   if (!name || !email || !password) {
-    showAlert("Lengkapi seluruh kolom pendaftaran.");
+    showAlert("Lengkapi seluruh data pendaftaran siswa.");
     return;
   }
 
   if (name.length < 2) {
-    showAlert("Nama lengkap minimal 2 karakter.");
+    showAlert("Nama lengkap siswa minimal 2 karakter.");
     return;
   }
 
   if (!isValidEmail(email)) {
-    showAlert("Format alamat email tidak valid.");
+    showAlert("Format email siswa tidak valid.");
     return;
   }
 
@@ -260,7 +258,7 @@ registerForm.addEventListener("submit", async (e) => {
     return;
   }
 
-  setLoading(registerForm, btn, true, "Mendaftarkan...", "Buat Akun Baru");
+  setLoading(registerForm, btn, true, "Mendaftarkan...", "Aktifkan Akun Siswa");
 
   try {
     const passwordHash = await hashPassword(password);
@@ -279,18 +277,18 @@ registerForm.addEventListener("submit", async (e) => {
       switchTab("login");
       document.getElementById("login-email").value = email;
       document.getElementById("login-password").focus();
-      showAlert(result.message || "Pendaftaran berhasil! Silakan masuk.", "success");
+      showAlert(result.message || "Akun siswa berhasil didaftarkan! Silakan masuk.", "success");
     } else {
-      showAlert(result.message || "Pendaftaran gagal diproses.");
+      showAlert(result.message || "Pendaftaran akun siswa gagal diproses.");
     }
   } catch (err) {
-    showAlert(err.message || "Gagal terhubung ke server.");
+    showAlert(err.message || "Gagal terhubung ke server kelas.");
   } finally {
-    setLoading(registerForm, btn, false, "Mendaftarkan...", "Buat Akun Baru");
+    setLoading(registerForm, btn, false, "Mendaftarkan...", "Aktifkan Akun Siswa");
   }
 });
 
-// Submit Masuk
+// Submit Masuk Siswa
 loginForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   clearAlert();
@@ -301,16 +299,16 @@ loginForm.addEventListener("submit", async (e) => {
   const remember = rememberCheckbox ? rememberCheckbox.checked : true;
 
   if (!email || !password) {
-    showAlert("Masukkan alamat email dan kata sandi.");
+    showAlert("Masukkan email siswa dan kata sandi.");
     return;
   }
 
   if (!isValidEmail(email)) {
-    showAlert("Format alamat email tidak valid.");
+    showAlert("Format email siswa tidak valid.");
     return;
   }
 
-  setLoading(loginForm, btn, true, "Memverifikasi...", "Masuk ke Workspace");
+  setLoading(loginForm, btn, true, "Memverifikasi...", "Masuk ke Ruang Kelas");
 
   try {
     const passwordHash = await hashPassword(password);
@@ -335,11 +333,11 @@ loginForm.addEventListener("submit", async (e) => {
 
       navigateTo(HOME_PAGE);
     } else {
-      showAlert(result.message || "Email atau kata sandi salah.");
+      showAlert(result.message || "Email atau kata sandi siswa tidak sesuai.");
     }
   } catch (err) {
-    showAlert(err.message || "Gagal terhubung ke server.");
+    showAlert(err.message || "Gagal terhubung ke server kelas.");
   } finally {
-    setLoading(loginForm, btn, false, "Memverifikasi...", "Masuk ke Workspace");
+    setLoading(loginForm, btn, false, "Memverifikasi...", "Masuk ke Ruang Kelas");
   }
 });
