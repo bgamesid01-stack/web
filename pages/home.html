@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#120b0f" />
   <title>Workspace — SakuraPortal</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23be123c'/%3E%3Cpath d='M16 5.5c1.5 3 2 5.9.9 8.5 2.6-1 5.6-.5 8.2 1.4-2.5 1.9-5.4 2.5-8.1 1.6 1.5 2.4 1.2 5.4-.5 8.1-1.7-2.7-2-5.7-.5-8.1-2.7.9-5.6.3-8.1-1.6 2.6-1.9 5.6-2.4 8.2-1.4-1.1-2.6-.6-5.5.9-8.5z' fill='%23ffffff'/%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -11,53 +13,76 @@
   <script src="../assets/js/guard.js"></script>
 </head>
 <body class="auth-checking">
+  <!-- TOP NAVIGATION BAR -->
   <header class="topbar">
     <div class="topbar-inner">
-      <div class="brand">
-        <div class="brand-mark" aria-hidden="true">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2.5c1.2 2.4 1.6 4.7.7 6.8 2.1-.8 4.5-.4 6.6 1.1-2 1.5-4.3 2-6.5 1.3 1.2 1.9 1 4.3-.4 6.5-1.4-2.2-1.6-4.6-.4-6.5-2.2.7-4.5.2-6.5-1.3 2.1-1.5 4.5-1.9 6.6-1.1-.9-2.1-.5-4.4.7-6.8z"/>
-          </svg>
+      <div class="topbar-left">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2.5c1.2 2.4 1.6 4.7.7 6.8 2.1-.8 4.5-.4 6.6 1.1-2 1.5-4.3 2-6.5 1.3 1.2 1.9 1 4.3-.4 6.5-1.4-2.2-1.6-4.6-.4-6.5-2.2.7-4.5.2-6.5-1.3 2.1-1.5 4.5-1.9 6.6-1.1-.9-2.1-.5-4.4.7-6.8z"/>
+            </svg>
+          </div>
+          <span>SakuraPortal</span>
         </div>
-        <span>SakuraPortal</span>
+        <span class="nav-divider" aria-hidden="true"></span>
+        <span class="nav-context">Workspace</span>
       </div>
 
       <div class="topbar-actions">
-        <div class="user-pill">
+        <span class="live-clock" id="live-clock" aria-label="Waktu saat ini">--:--</span>
+        <div class="user-pill" title="Akun Aktif">
           <div class="avatar" id="nav-avatar">U</div>
           <span id="nav-username">User</span>
         </div>
-        <button type="button" id="btn-logout" class="btn-logout">Keluar</button>
+        <button type="button" id="btn-logout-trigger" class="btn-logout">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+            <polyline points="16 17 21 12 16 7"/>
+            <line x1="21" y1="12" x2="9" y2="12"/>
+          </svg>
+          <span>Keluar</span>
+        </button>
       </div>
     </div>
   </header>
 
+  <!-- MAIN WORKSPACE -->
   <main class="workspace" id="workspace">
-    <div class="page-head anim-up" style="--delay: 0.05s">
-      <div>
+    <!-- Hero Header -->
+    <section class="page-head anim-up" style="--delay: 0.04s">
+      <div class="hero-copy">
+        <p class="greeting-eyebrow" id="greeting-eyebrow">Selamat Datang Kembali</p>
         <h1>Halo, <span id="hero-name">Pengguna</span></h1>
       </div>
-      <span class="status-tag">
-        <span class="status-dot"></span>
-        Sesi Aktif
-      </span>
-    </div>
 
-    <section class="meta-grid">
-      <article class="meta-card anim-up" style="--delay: 0.12s">
+      <div class="head-badges">
+        <span class="status-tag">
+          <span class="status-dot"></span>
+          Sesi Terautentikasi
+        </span>
+      </div>
+    </section>
+
+    <!-- 4 KPI / Account Telemetry Cards -->
+    <section class="meta-grid" aria-label="Ringkasan Akun">
+      <article class="meta-card anim-up" style="--delay: 0.09s">
         <div class="meta-icon" aria-hidden="true">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <rect width="20" height="16" x="2" y="4" rx="2"/>
             <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
           </svg>
         </div>
-        <div>
-          <span>Email Akun</span>
+        <div class="meta-body">
+          <div class="meta-top-row">
+            <span>Email Terdaftar</span>
+            <button type="button" id="btn-copy-email" class="mini-action" title="Salin alamat email">Salin</button>
+          </div>
           <strong id="card-email">-</strong>
         </div>
       </article>
 
-      <article class="meta-card anim-up" style="--delay: 0.18s">
+      <article class="meta-card anim-up" style="--delay: 0.14s">
         <div class="meta-icon" aria-hidden="true">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
@@ -66,33 +91,163 @@
             <line x1="3" y1="10" x2="21" y2="10"/>
           </svg>
         </div>
-        <div>
-          <span>Tanggal Terdaftar</span>
+        <div class="meta-body">
+          <span>Tanggal Bergabung</span>
           <strong id="card-date">-</strong>
+        </div>
+      </article>
+
+      <article class="meta-card anim-up" style="--delay: 0.19s">
+        <div class="meta-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        </div>
+        <div class="meta-body">
+          <span>Enkripsi & Cloud</span>
+          <strong>SHA-256 • Google Sheets</strong>
         </div>
       </article>
 
       <article class="meta-card anim-up" style="--delay: 0.24s">
         <div class="meta-icon" aria-hidden="true">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
           </svg>
         </div>
-        <div>
-          <span>Keamanan</span>
-          <strong>SHA-256 Cloud Sync</strong>
+        <div class="meta-body">
+          <span>Durasi Sesi Aktif</span>
+          <strong id="session-timer">00:00:00</strong>
         </div>
       </article>
     </section>
 
-    <section class="content-surface anim-up" style="--delay: 0.3s">
-      <div class="surface-header">
-        <h2>Area Konten Utama</h2>
-        <span class="surface-badge">Terproteksi</span>
+    <!-- Main Modular Workspace Grid -->
+    <section class="workspace-grid">
+      <!-- Kolom Utama: Manajemen Tugas & Catatan Workspace -->
+      <article class="panel-card anim-up" style="--delay: 0.28s">
+        <div class="panel-header">
+          <div>
+            <h2>Catatan & Tugas Workspace</h2>
+            <p class="panel-desc">Tersimpan otomatis pada profil lokal akun Anda.</p>
+          </div>
+          <span class="counter-badge" id="task-counter">0/0 Selesai</span>
+        </div>
+
+        <form id="task-form" class="task-form">
+          <input
+            type="text"
+            id="task-input"
+            placeholder="Tulis rencana kerja atau catatan baru..."
+            maxlength="140"
+            required
+            autocomplete="off"
+          />
+          <select id="task-tag" aria-label="Kategori tugas">
+            <option value="Kerja">Kerja</option>
+            <option value="Penting">Penting</option>
+            <option value="Pribadi">Pribadi</option>
+          </select>
+          <button type="submit" class="btn-add">Tambah</button>
+        </form>
+
+        <div class="filter-bar" role="tablist" aria-label="Filter Tugas">
+          <button type="button" class="filter-chip active" data-filter="all">Semua</button>
+          <button type="button" class="filter-chip" data-filter="active">Aktif</button>
+          <button type="button" class="filter-chip" data-filter="completed">Selesai</button>
+        </div>
+
+        <ul id="task-list" class="task-list" aria-live="polite"></ul>
+
+        <div id="task-empty" class="empty-state hidden">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+          </svg>
+          <p>Belum ada item pada kategori ini.</p>
+        </div>
+      </article>
+
+      <!-- Kolom Kanan: Inspector Sesi & Log Aktivitas -->
+      <div class="side-stack">
+        <article class="panel-card anim-up" style="--delay: 0.33s">
+          <div class="panel-header">
+            <div>
+              <h2>Inspector Akun & Sesi</h2>
+              <p class="panel-desc">Metadata autentikasi aktif saat ini.</p>
+            </div>
+            <span class="surface-badge">Terproteksi</span>
+          </div>
+
+          <dl class="info-list">
+            <div class="info-row">
+              <dt>Nama Profil</dt>
+              <dd id="detail-name">-</dd>
+            </div>
+            <div class="info-row">
+              <dt>Penyimpanan Sesi</dt>
+              <dd id="detail-storage">-</dd>
+            </div>
+            <div class="info-row">
+              <dt>Waktu Masuk</dt>
+              <dd id="detail-login-time">-</dd>
+            </div>
+            <div class="info-row">
+              <dt>Token Sidik Jari</dt>
+              <dd><code id="detail-fingerprint">-</code></dd>
+            </div>
+          </dl>
+
+          <div class="panel-actions">
+            <button type="button" id="btn-export-session" class="btn-secondary">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              <span>Ekspor Ringkasan Sesi (.json)</span>
+            </button>
+          </div>
+        </article>
+
+        <article class="panel-card anim-up" style="--delay: 0.38s">
+          <div class="panel-header">
+            <div>
+              <h2>Log Aktivitas Sesi</h2>
+              <p class="panel-desc">Jejak interaksi real-time di halaman ini.</p>
+            </div>
+          </div>
+
+          <ul id="activity-list" class="activity-list"></ul>
+        </article>
       </div>
-      <p>Halaman ini terkunci oleh sistem autentikasi. Silakan isi bagian ini dengan fitur atau konten utama aplikasi Anda.</p>
     </section>
   </main>
+
+  <!-- MODAL KONFIRMASI LOGOUT -->
+  <div id="logout-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-card">
+      <div class="modal-icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+          <polyline points="16 17 21 12 16 7"/>
+          <line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+      </div>
+      <h3 id="modal-title">Akhiri Sesi Sekarang?</h3>
+      <p>Anda akan keluar dari workspace dan perlu memasukkan kredensial kembali untuk mengakses halaman ini.</p>
+      <div class="modal-actions">
+        <button type="button" id="btn-cancel-logout" class="btn-ghost">Batal</button>
+        <button type="button" id="btn-confirm-logout" class="btn-danger">Ya, Keluar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
 
   <script src="../assets/js/home.js"></script>
 </body>
