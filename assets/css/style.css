@@ -144,7 +144,7 @@ body {
     opacity: 0.28;
   }
   100% {
-    transform: translateY(560px) rotate(300deg) translateX(26px);
+    transform: translateY(620px) rotate(300deg) translateX(26px);
     opacity: 0;
   }
 }
@@ -198,7 +198,7 @@ body {
     background-color: var(--surface);
   }
 
-  .mon-crest,
+  .brand-center,
   .brand-foot {
     display: none;
   }
@@ -280,12 +280,12 @@ body {
 
   .app-wrapper {
     width: 100%;
-    max-width: 900px;
+    max-width: 940px;
   }
 
   .auth-shell {
     display: grid;
-    grid-template-columns: 0.86fr 1.14fr;
+    grid-template-columns: 0.88fr 1.12fr;
     background: var(--surface);
     border-radius: 20px;
     overflow: hidden;
@@ -293,7 +293,7 @@ body {
     box-shadow:
       0 24px 48px -12px rgba(24, 17, 21, 0.12),
       0 4px 12px -2px rgba(24, 17, 21, 0.04);
-    min-height: 540px;
+    min-height: 580px;
     animation: shellReveal 0.48s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
@@ -320,12 +320,21 @@ body {
     z-index: 1;
   }
 
-  .mon-crest {
-    width: 204px;
-    height: 204px;
-    margin: auto;
+  .brand-center {
     position: relative;
     z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 18px;
+    margin: auto 0;
+  }
+
+  .mon-crest {
+    width: 176px;
+    height: 176px;
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -346,16 +355,48 @@ body {
     animation: crestFloat 6s ease-in-out infinite;
   }
 
+  .brand-copy {
+    max-width: 260px;
+  }
+
+  .brand-copy h2 {
+    font-size: 1.08rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+    margin-bottom: 6px;
+  }
+
+  .brand-copy p {
+    font-size: 0.81rem;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.6);
+  }
+
   .brand-foot {
     position: relative;
     z-index: 1;
     display: flex;
     align-items: center;
-    gap: 8px;
-    font-size: 0.76rem;
+    justify-content: space-between;
+    font-size: 0.75rem;
     font-weight: 500;
-    color: rgba(255, 255, 255, 0.54);
-    letter-spacing: 0.02em;
+    color: rgba(255, 255, 255, 0.56);
+    letter-spacing: 0.01em;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .security-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .version-tag {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.42);
   }
 
   .pulse-dot {
@@ -367,7 +408,7 @@ body {
   }
 
   .form-panel {
-    padding: 44px 48px;
+    padding: 40px 48px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -376,7 +417,7 @@ body {
 
   .form-container {
     width: 100%;
-    max-width: 360px;
+    max-width: 372px;
     margin: 0 auto;
   }
 
@@ -476,14 +517,20 @@ body {
 }
 
 .form-header {
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
 .form-header h1 {
   font-weight: 700;
   letter-spacing: -0.025em;
   color: var(--text);
-  transition: opacity 0.2s ease;
+  margin-bottom: 4px;
+}
+
+.form-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
 }
 
 /* Segmented Tabs */
@@ -495,7 +542,7 @@ body {
   padding: 3px;
   border-radius: 10px;
   border: 1px solid var(--border);
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
 .tab-glider {
@@ -573,6 +620,17 @@ body {
   margin-bottom: 14px;
 }
 
+.label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.label-row label {
+  margin-bottom: 0;
+}
+
 .form-group label {
   display: block;
   font-size: 0.81rem;
@@ -580,6 +638,17 @@ body {
   color: var(--text);
   margin-bottom: 6px;
 }
+
+.strength-label {
+  font-size: 0.73rem;
+  font-weight: 600;
+  color: var(--text-placeholder);
+  transition: color 0.2s ease;
+}
+
+.strength-label.weak { color: #e11d48; }
+.strength-label.medium { color: #d97706; }
+.strength-label.strong { color: #059669; }
 
 .input-box {
   position: relative;
@@ -615,7 +684,7 @@ body {
   font-weight: 400;
 }
 
-.input-box input:hover {
+.input-box input:hover:not(:disabled) {
   border-color: var(--border-strong);
 }
 
@@ -623,6 +692,11 @@ body {
   background: var(--surface);
   border-color: var(--beni-600);
   box-shadow: 0 0 0 3px var(--beni-ring);
+}
+
+.input-box input:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
 }
 
 .input-box:focus-within .input-icon {
@@ -650,6 +724,55 @@ body {
 
 .toggle-pw:active {
   transform: scale(0.9);
+}
+
+/* Custom Checkbox */
+.form-options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.81rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox-label input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.checkbox-custom {
+  width: 17px;
+  height: 17px;
+  border-radius: 5px;
+  border: 1.5px solid var(--border-strong);
+  background: var(--surface-muted);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: transparent;
+  transition: all 0.16s ease;
+}
+
+.checkbox-label input:checked + .checkbox-custom {
+  background: var(--beni-600);
+  border-color: var(--beni-600);
+  color: #ffffff;
+}
+
+.checkbox-label input:focus-visible + .checkbox-custom {
+  box-shadow: 0 0 0 3px var(--beni-ring);
 }
 
 /* Password Strength Bars */
@@ -685,7 +808,7 @@ body {
   border: none;
   background: var(--beni-600);
   color: #ffffff;
-  margin-top: 8px;
+  margin-top: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -734,6 +857,18 @@ body {
   border-top-color: #ffffff;
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
+}
+
+.form-footer {
+  margin-top: 20px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
 }
 
 @media (prefers-reduced-motion: reduce) {
