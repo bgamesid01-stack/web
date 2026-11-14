@@ -1,4 +1,4 @@
-const SCRIPT_URL = "PASTE_URL_WEB_APP_APPS_SCRIPT_DISINI";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzGg8W7FfnM8H-G2lpdkMMhFKcZ3lEXkqygZxhqK2fZnhHv1wgvgW4I0Xw-7ga-jWem/exec";
 const SESSION_KEY = "akunportal_active_user";
 const HOME_PAGE = "pages/home.html";
 const REQUEST_TIMEOUT_MS = 15000;
