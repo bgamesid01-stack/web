@@ -1,10 +1,23 @@
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzGg8W7FfnM8H-G2lpdkMMhFKcZ3lEXkqygZxhqK2fZnhHv1wgvgW4I0Xw-7ga-jWem/exec";
 const SESSION_KEY = "akunportal_active_user";
 const HOME_PAGE = "pages/home.html";
+const REQUEST_TIMEOUT_MS = 15000;
 
-if (localStorage.getItem(SESSION_KEY)) {
-  window.location.replace(HOME_PAGE);
-}
+// Cek apakah sesi sudah ada di localStorage atau sessionStorage
+(function checkExistingSession() {
+  try {
+    const raw = localStorage.getItem(SESSION_KEY) || sessionStorage.getItem(SESSION_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (parsed && parsed.email) {
+        window.location.replace(HOME_PAGE);
+      }
+    }
+  } catch {
+    localStorage.removeItem(SESSION_KEY);
+    sessionStorage.removeItem(SESSION_KEY);
+  }
+})();
 
 const appWrapper = document.getElementById("app-wrapper");
 const alertBox = document.getElementById("alert-box");
@@ -17,11 +30,15 @@ const tabLogin = document.getElementById("tab-login");
 const tabRegister = document.getElementById("tab-register");
 const regPasswordInput = document.getElementById("reg-password");
 const strengthMeter = document.getElementById("strength-meter");
+const strengthLabel = document.getElementById("strength-label");
+const rememberCheckbox = document.getElementById("remember-session");
 
 const ICONS = {
   error: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`,
   success: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`
 };
+
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 async function hashPassword(password) {
   const data = new TextEncoder().encode(password);
@@ -29,6 +46,10 @@ async function hashPassword(password) {
   return Array.from(new Uint8Array(hashBuffer))
     .map((b) => b.toString(16).padStart(2, "0"))
     .join("");
+}
+
+function isValidEmail(email) {
+  return EMAIL_REGEX.test(email);
 }
 
 function triggerShake(element) {
@@ -51,10 +72,16 @@ function clearAlert() {
   alertBox.className = "alert hidden";
 }
 
-function setLoading(btn, isLoading, loadingText, defaultText) {
+function setFormDisabled(form, disabled) {
+  form.querySelectorAll("input, button").forEach((el) => {
+    el.disabled = disabled;
+  });
+}
+
+function setLoading(form, btn, isLoading, loadingText, defaultText) {
   const textSpan = btn.querySelector(".btn-text");
   const spinner = btn.querySelector(".spinner");
-  btn.disabled = isLoading;
+  setFormDisabled(form, isLoading);
   textSpan.textContent = isLoading ? loadingText : defaultText;
   spinner.classList.toggle("hidden", !isLoading);
 }
@@ -62,6 +89,7 @@ function setLoading(btn, isLoading, loadingText, defaultText) {
 function switchTab(mode) {
   clearAlert();
   const title = document.getElementById("form-title");
+  const subtitle = document.getElementById("form-subtitle");
 
   if (mode === "login") {
     tabsContainer.classList.remove("register-mode");
@@ -73,6 +101,7 @@ function switchTab(mode) {
     tabLogin.setAttribute("aria-selected", "true");
     tabRegister.setAttribute("aria-selected", "false");
     title.textContent = "Masuk ke Akun";
+    subtitle.textContent = "Masukkan kredensial Anda untuk membuka workspace.";
   } else {
     tabsContainer.classList.add("register-mode");
     loginForm.classList.add("hidden");
@@ -83,6 +112,7 @@ function switchTab(mode) {
     tabLogin.setAttribute("aria-selected", "false");
     tabRegister.setAttribute("aria-selected", "true");
     title.textContent = "Buat Akun Baru";
+    subtitle.textContent = "Daftarkan akun baru untuk sinkronisasi cloud terenkripsi.";
   }
 }
 
@@ -95,19 +125,55 @@ function navigateTo(url) {
 
 async function sendToSheets(payload) {
   if (!SCRIPT_URL || SCRIPT_URL.includes("PASTE_URL")) {
-    throw new Error("URL Google Apps Script belum dipasang di assets/js/script.js.");
+    throw new Error("Konfigurasi server belum lengkap: pasang URL Web App Google Apps Script di assets/js/script.js.");
   }
 
-  const response = await fetch(SCRIPT_URL, {
-    method: "POST",
-    body: JSON.stringify(payload),
-  });
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
 
-  return await response.json();
+  try {
+    const response = await fetch(SCRIPT_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+      },
+      body: JSON.stringify(payload),
+      signal: controller.signal
+    });
+
+    if (!response.ok) {
+      throw new Error(`Server merespons dengan status HTTP ${response.status}.`);
+    }
+
+    const rawText = await response.text();
+    try {
+      return JSON.parse(rawText);
+    } catch {
+      throw new Error("Respons server tidak valid. Pastikan Web App Apps Script di-deploy untuk akses 'Anyone'.");
+    }
+  } catch (err) {
+    if (err.name === "AbortError") {
+      throw new Error("Koneksi ke server melebihi batas waktu (timeout). Periksa jaringan Anda.");
+    }
+    throw err;
+  } finally {
+    clearTimeout(timeoutId);
+  }
 }
 
 tabLogin.addEventListener("click", () => switchTab("login"));
 tabRegister.addEventListener("click", () => switchTab("register"));
+
+// Navigasi keyboard (Panah Kiri/Kanan) pada tab
+tabsContainer.addEventListener("keydown", (e) => {
+  if (e.key === "ArrowRight") {
+    switchTab("register");
+    tabRegister.focus();
+  } else if (e.key === "ArrowLeft") {
+    switchTab("login");
+    tabLogin.focus();
+  }
+});
 
 document.querySelectorAll(".auth-form input").forEach((input) => {
   input.addEventListener("input", () => {
@@ -131,19 +197,34 @@ document.querySelectorAll(".toggle-pw").forEach((btn) => {
 regPasswordInput.addEventListener("input", () => {
   const val = regPasswordInput.value;
   strengthMeter.classList.remove("weak", "medium", "strong");
-  if (!val) return;
+  strengthLabel.classList.remove("weak", "medium", "strong");
+
+  if (!val) {
+    strengthLabel.textContent = "Min. 6 karakter";
+    return;
+  }
 
   let score = 0;
   if (val.length >= 6) score++;
   if (val.length >= 8 && /[0-9]/.test(val)) score++;
   if (/[A-Z]/.test(val) || /[^A-Za-z0-9]/.test(val)) score++;
 
-  if (score <= 1) strengthMeter.classList.add("weak");
-  else if (score === 2) strengthMeter.classList.add("medium");
-  else strengthMeter.classList.add("strong");
+  if (score <= 1) {
+    strengthMeter.classList.add("weak");
+    strengthLabel.classList.add("weak");
+    strengthLabel.textContent = "Lemah";
+  } else if (score === 2) {
+    strengthMeter.classList.add("medium");
+    strengthLabel.classList.add("medium");
+    strengthLabel.textContent = "Sedang";
+  } else {
+    strengthMeter.classList.add("strong");
+    strengthLabel.classList.add("strong");
+    strengthLabel.textContent = "Kuat";
+  }
 });
 
-// Submit Daftar
+// Submit Pendaftaran
 registerForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   clearAlert();
@@ -159,6 +240,16 @@ registerForm.addEventListener("submit", async (e) => {
     return;
   }
 
+  if (name.length < 2) {
+    showAlert("Nama lengkap minimal 2 karakter.");
+    return;
+  }
+
+  if (!isValidEmail(email)) {
+    showAlert("Format alamat email tidak valid.");
+    return;
+  }
+
   if (password.length < 6) {
     showAlert("Kata sandi minimal 6 karakter.");
     return;
@@ -169,7 +260,7 @@ registerForm.addEventListener("submit", async (e) => {
     return;
   }
 
-  setLoading(btn, true, "Memproses...", "Buat Akun");
+  setLoading(registerForm, btn, true, "Mendaftarkan...", "Buat Akun Baru");
 
   try {
     const passwordHash = await hashPassword(password);
@@ -183,16 +274,19 @@ registerForm.addEventListener("submit", async (e) => {
     if (result.status === "success") {
       registerForm.reset();
       strengthMeter.classList.remove("weak", "medium", "strong");
+      strengthLabel.classList.remove("weak", "medium", "strong");
+      strengthLabel.textContent = "Min. 6 karakter";
       switchTab("login");
       document.getElementById("login-email").value = email;
-      showAlert(result.message, "success");
+      document.getElementById("login-password").focus();
+      showAlert(result.message || "Pendaftaran berhasil! Silakan masuk.", "success");
     } else {
-      showAlert(result.message);
+      showAlert(result.message || "Pendaftaran gagal diproses.");
     }
   } catch (err) {
     showAlert(err.message || "Gagal terhubung ke server.");
   } finally {
-    setLoading(btn, false, "Memproses...", "Buat Akun");
+    setLoading(registerForm, btn, false, "Mendaftarkan...", "Buat Akun Baru");
   }
 });
 
@@ -204,13 +298,19 @@ loginForm.addEventListener("submit", async (e) => {
   const email = document.getElementById("login-email").value.trim().toLowerCase();
   const password = document.getElementById("login-password").value;
   const btn = document.getElementById("btn-login");
+  const remember = rememberCheckbox ? rememberCheckbox.checked : true;
 
   if (!email || !password) {
-    showAlert("Masukkan email dan kata sandi.");
+    showAlert("Masukkan alamat email dan kata sandi.");
     return;
   }
 
-  setLoading(btn, true, "Memverifikasi...", "Masuk");
+  if (!isValidEmail(email)) {
+    showAlert("Format alamat email tidak valid.");
+    return;
+  }
+
+  setLoading(loginForm, btn, true, "Memverifikasi...", "Masuk ke Workspace");
 
   try {
     const passwordHash = await hashPassword(password);
@@ -220,15 +320,26 @@ loginForm.addEventListener("submit", async (e) => {
       passwordHash,
     });
 
-    if (result.status === "success") {
-      localStorage.setItem(SESSION_KEY, JSON.stringify(result.user));
+    if (result.status === "success" && result.user) {
+      const sessionPayload = {
+        ...result.user,
+        loginAt: new Date().toISOString(),
+        storageType: remember ? "local" : "session"
+      };
+
+      localStorage.removeItem(SESSION_KEY);
+      sessionStorage.removeItem(SESSION_KEY);
+
+      const targetStorage = remember ? localStorage : sessionStorage;
+      targetStorage.setItem(SESSION_KEY, JSON.stringify(sessionPayload));
+
       navigateTo(HOME_PAGE);
     } else {
-      showAlert(result.message);
+      showAlert(result.message || "Email atau kata sandi salah.");
     }
   } catch (err) {
     showAlert(err.message || "Gagal terhubung ke server.");
   } finally {
-    setLoading(btn, false, "Memverifikasi...", "Masuk");
+    setLoading(loginForm, btn, false, "Memverifikasi...", "Masuk ke Workspace");
   }
 });

@@ -2,14 +2,29 @@ const SESSION_KEY = "akunportal_active_user";
 const LOGIN_PAGE = "../index.html";
 window.activeUser = null;
 
-try {
-  const savedData = localStorage.getItem(SESSION_KEY);
-  if (!savedData) throw new Error("Belum login");
+(function enforceSessionGuard() {
+  try {
+    const localData = localStorage.getItem(SESSION_KEY);
+    const sessionData = sessionStorage.getItem(SESSION_KEY);
+    const savedData = localData || sessionData;
 
-  const parsedUser = JSON.parse(savedData);
-  if (!parsedUser || !parsedUser.email) throw new Error("Sesi tidak valid");
+    if (!savedData) {
+      throw new Error("Sesi tidak ditemukan");
+    }
 
-  window.activeUser = parsedUser;
-} catch {
-  window.location.replace(LOGIN_PAGE);
-}
+    const parsedUser = JSON.parse(savedData);
+    if (!parsedUser || typeof parsedUser !== "object" || !parsedUser.email) {
+      throw new Error("Struktur sesi tidak valid");
+    }
+
+    if (!parsedUser.loginAt) {
+      parsedUser.loginAt = new Date().toISOString();
+    }
+
+    window.activeUser = parsedUser;
+  } catch {
+    localStorage.removeItem(SESSION_KEY);
+    sessionStorage.removeItem(SESSION_KEY);
+    window.location.replace(LOGIN_PAGE);
+  }
+})();
